@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-02T15:53:00Z",
+  "title": "Design System: CGEC Gymkhana",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Crimson Red",
+        "canonical": "#E10600",
+        "tonalRamp": ["#300100", "#5E0200", "#8C0400", "#B80500", "#E10600", "#FF1E1E", "#FF5252", "#FF9999"]
+      },
+      "primary-light": {
+        "role": "primary",
+        "displayName": "Crimson Light",
+        "canonical": "#FF1E1E",
+        "tonalRamp": ["#5E0200", "#8C0400", "#B80500", "#E10600", "#FF1E1E", "#FF5252", "#FF9999", "#FFCCCC"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Midnight Black",
+        "canonical": "#0A0A0A",
+        "tonalRamp": ["#000000", "#050505", "#0A0A0A", "#111111", "#1A1A1A", "#2A2A2A", "#4A4A4A", "#F5F5F5"]
+      },
+      "neutral-card": {
+        "role": "neutral",
+        "displayName": "Midnight Card",
+        "canonical": "#161616",
+        "tonalRamp": ["#0A0A0A", "#111111", "#161616", "#1A1A1A", "#222222", "#333333", "#5A5A5A", "#A0A0A0"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Title",
+        "purpose": "Heavy headlines and hero display sections. Always uppercase."
+      },
+      "body": {
+        "displayName": "Body Font",
+        "purpose": "Readable standard body text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-card",
+        "value": "0 4px 24px rgba(0,0,0,0.5)",
+        "purpose": "Elevates cards off the base background."
+      },
+      {
+        "name": "shadow-red",
+        "value": "0 0 32px rgba(225, 6, 0, 0.35)",
+        "purpose": "Atmospheric hover backlighting glow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-base",
+        "value": "250ms ease-out",
+        "purpose": "Standard interactive hover easing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "375px"
+      },
+      {
+        "name": "tablet",
+        "value": "768px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Call-to-action button for registering or submitting forms.",
+      "html": "<button class=\"ds-btn-primary\">REGISTER NOW</button>",
+      "css": ".ds-btn-primary { background: #E10600; color: #ffffff; padding: 14px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 4px; border: none; cursor: pointer; transition: all 250ms ease-out; box-shadow: 0 0 0 0 rgba(225, 6, 0, 0.35); } .ds-btn-primary:hover { background: #FF1E1E; box-shadow: 0 0 32px rgba(225, 6, 0, 0.35); transform: translateY(-1px); } .ds-btn-primary:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action button.",
+      "html": "<button class=\"ds-btn-outline\">VIEW FACILITIES</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #F5F5F5; padding: 14px 28px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; border-radius: 4px; border: 1.5px solid rgba(255, 255, 255, 0.14); cursor: pointer; transition: all 250ms ease-out; } .ds-btn-outline:hover { border-color: #E10600; color: #E10600; }"
+    },
+    {
+      "name": "Standard Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Default surface container for listing items, sections or rules.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">CARD HEADER</h3><p class=\"ds-card-text\">Standard body copy explaining details inside a premium card component.</p></div>",
+      "css": ".ds-card { background: #161616; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; padding: 24px; transition: all 250ms ease-out; } .ds-card:hover { border-color: rgba(255, 255, 255, 0.14); transform: translateY(-2px); box-shadow: 0 4px 24px rgba(0,0,0,0.5); } .ds-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 600; text-transform: uppercase; color: #F5F5F5; margin-bottom: 12px; } .ds-card-text { font-family: 'Inter', sans-serif; font-size: 16px; color: #A0A0A0; line-height: 1.65; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Crimson Monolith",
+    "overview": "A high-impact, high-energy layout structure utilizing heavy dark surfaces pierced by raw, concentrated red energy. The display typography is heavy and condensed, delivering a commanding, athletic presence. The layout emphasizes structure, high contrast, and dynamic illumination via custom CSS glowing gradients, with an absolute avoidance of photography.",
+    "keyCharacteristics": [
+      "Raw Contrast: Saturated athletic red accent against absolute deep midnight black.",
+      "Graphic-Driven: Pure reliance on CSS effects, clean SVG iconography, and strong display typography rather than photography.",
+      "Physical Weight: Thick cards, defined borders, and atmospheric glows to ground the user interface in a premium athletic space."
+    ],
+    "rules": [
+      {
+        "name": "The Sole Accent Rule",
+        "body": "The primary red accent #E10600 must be the only hue accent. No blue, yellow, green, or other colored accent is permitted under any circumstances.",
+        "section": "colors"
+      },
+      {
+        "name": "The 10% Accenting Rule",
+        "body": "Red accenting must occupy <= 10% of any given viewport surface area. Its high-energy impact is preserved through constraint.",
+        "section": "colors"
+      },
+      {
+        "name": "The Heavy Case Rule",
+        "body": "All headings using Barlow Condensed must be styled in uppercase to project a structured, athletic feel.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-at-Rest Rule",
+        "body": "All cards and containers are flat at rest. Elevation glows and translateY offsets are strictly triggered as active hover/focus responses.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do stick to the Midnight Black (#0A0A0A) and Crimson Red (#E10600) color palette.",
+      "Do use Barlow Condensed for display titles and force them to uppercase.",
+      "Do rely on CSS gradients, orbs, and clean SVG shapes for visual background energy."
+    ],
+    "donts": [
+      "Don't use photography or stock images of gym goers, staff, or equipment.",
+      "Don't add secondary accent colors such as corporate blue, gold, or green.",
+      "Don't use soft/round/bubbly geometries; keep radii subtle (4px to 16px)."
+    ]
+  }
+}
