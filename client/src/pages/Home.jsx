@@ -22,7 +22,7 @@ const stats = [
 ]
 
 const highlights = [
-  { icon: <Users size={20} />, title: 'Students Only', desc: 'Exclusive access for currently enrolled CGEC students and staff.' },
+  { icon: <Users size={20} />, title: 'Prioritized Access', desc: 'Open to enrolled students, with slot priority given to 3rd & 4th-year students.' },
   { icon: <ShieldCheck size={20} />, title: 'Safe Environment', desc: 'Well-maintained equipment, proper ventilation, and safety protocols.' },
   { icon: <Clock size={20} />, title: 'Flexible Timings', desc: 'Morning and evening slots to fit any schedule, 6 days a week.' },
   { icon: <Star size={20} />, title: 'Free Access', desc: 'No extra fee — gym access included with your enrollment at CGEC.' },
@@ -33,63 +33,75 @@ export default function Home() {
   const statsRef = useScrollReveal()
   const equipRef = useScrollReveal()
   const highlightRef = useScrollReveal()
+  const eventsRef = useScrollReveal()
 
   return (
     <div className="home">
       {/* ── HERO ── */}
       <section className="hero" ref={heroRef} aria-label="Hero">
-        {/* Animated background */}
-        <div className="hero__bg" aria-hidden="true">
-          <div className="hero__orb hero__orb--1" />
-          <div className="hero__orb hero__orb--2" />
-          <div className="hero__orb hero__orb--3" />
-          <div className="hero__grid" />
+        {/* Full-bleed Banner Graphic Background */}
+        <div className="hero__banner" aria-hidden="true">
+          <img 
+            src="/hero_wide_banner.png" 
+            alt="" 
+            className="hero__banner-image" 
+          />
+          <div className="hero__banner-gradient" />
+          <div className="hero__banner-vignette" />
         </div>
 
-        {/* Decorative dumbbell SVG */}
-        <div className="hero__deco" aria-hidden="true">
-          <svg viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="hero__deco-svg">
-            <g opacity="0.12" stroke="#E10600" strokeWidth="6" strokeLinecap="round">
-              <rect x="100" y="40" width="120" height="40" rx="10"/>
-              <line x1="40" y1="52" x2="100" y2="52"/>
-              <line x1="40" y1="68" x2="100" y2="68"/>
-              <line x1="220" y1="52" x2="280" y2="52"/>
-              <line x1="220" y1="68" x2="280" y2="68"/>
-              <rect x="20" y="38" width="28" height="44" rx="8" fill="#E10600" fillOpacity="0.15"/>
-              <rect x="272" y="38" width="28" height="44" rx="8" fill="#E10600" fillOpacity="0.15"/>
-            </g>
-          </svg>
+        {/* Floating Telemetry & System Tags */}
+        <div className="hero__telemetry" aria-hidden="true">
+          <div className="hero__telemetry-item">
+            <span className="hero__telemetry-label">SYS_STATUS</span>
+            <span className="hero__telemetry-value text-red">PORTAL: ACTIVE</span>
+          </div>
+          <div className="hero__telemetry-item">
+            <span className="hero__telemetry-label">COORDINATES</span>
+            <span className="hero__telemetry-value">[22.56, 88.16]</span>
+          </div>
+          <div className="hero__telemetry-item">
+            <span className="hero__telemetry-label">CTRL_ZONE</span>
+            <span className="hero__telemetry-value">CAMPUS_A</span>
+          </div>
         </div>
 
-        <div className="container hero__content">
-          <div className="fade-in">
-            <span className="tag">CGEC Student Fitness Facility</span>
-          </div>
-          <h1 className="display-xl hero__title fade-in" style={{ transitionDelay: '80ms' }}>
-            Train Hard.<br />
-            <span className="text-gradient">Rise Higher.</span>
-          </h1>
-          <p className="body-lg hero__subtitle fade-in" style={{ transitionDelay: '160ms' }}>
-            CGEC Gymkhana — the official fitness facility for students of College of Government Engineering & Science. 
-            Fully equipped, zero extra cost, built for you.
-          </p>
-          <div className="hero__actions fade-in" style={{ transitionDelay: '240ms' }}>
-            <Link to="/register" className="btn btn-primary btn-lg">
-              Register Now <ArrowRight size={20} />
-            </Link>
-            <Link to="/facilities" className="btn btn-outline">
-              Explore Facilities <ChevronRight size={18} />
-            </Link>
-          </div>
+        <div className="container hero__banner-content">
+          <div className="hero__content">
+            <div className="fade-in hero__badge-container">
+              <span className="hero__status-dot" />
+              <span className="hero__badge">CGEC Student Fitness Facility</span>
+              <span className="hero__serial">[SYS_GKM_v1.0]</span>
+            </div>
+            
+            <h1 className="display-xl hero__title fade-in" style={{ transitionDelay: '80ms' }}>
+              Train Hard.<br />
+              <span className="text-gradient">Rise Higher.</span>
+            </h1>
+            
+            <p className="body-lg hero__subtitle fade-in" style={{ transitionDelay: '160ms' }}>
+              CGEC Gymkhana is the campus strength hub for students of College of Government Engineering & Science. 
+              Fully equipped, zero extra fees, and engineered to build champions.
+            </p>
+            
+            <div className="hero__actions fade-in" style={{ transitionDelay: '240ms' }}>
+              <Link to="/register" className="btn btn-primary btn-lg hero__cta-btn">
+                Register Now <ArrowRight size={20} />
+              </Link>
+              <Link to="/facilities" className="btn btn-outline hero__secondary-btn">
+                Explore Facilities <ChevronRight size={18} />
+              </Link>
+            </div>
 
-          {/* Mini stats row */}
-          <div className="hero__mini-stats fade-in" style={{ transitionDelay: '320ms' }}>
-            {stats.slice(0, 3).map(({ value, label }) => (
-              <div key={label} className="hero__mini-stat">
-                <span className="hero__mini-stat-value">{value}</span>
-                <span className="hero__mini-stat-label">{label}</span>
-              </div>
-            ))}
+            {/* Mini stats row */}
+            <div className="hero__mini-stats fade-in" style={{ transitionDelay: '320ms' }}>
+              {stats.slice(0, 3).map(({ value, label }) => (
+                <div key={label} className="hero__mini-stat">
+                  <span className="hero__mini-stat-value">{value}</span>
+                  <span className="hero__mini-stat-label">{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -168,6 +180,56 @@ export default function Home() {
           <div className="fade-in" style={{ textAlign: 'center', marginTop: 'var(--sp-10)' }}>
             <Link to="/facilities" className="btn btn-outline">
               View All Equipment <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURED EVENTS ── */}
+      <section className="section" ref={eventsRef} aria-labelledby="events-heading" style={{ borderTop: '1px solid var(--border)' }}>
+        <div className="container">
+          <div className="section-header fade-in">
+            <span className="label text-red">Campus Life</span>
+            <div className="divider" style={{ marginTop: 'var(--sp-3)' }} />
+            <h2 id="events-heading" className="display-md" style={{ marginTop: 'var(--sp-3)' }}>
+              Upcoming Gymkhana Events
+            </h2>
+            <p className="body-lg text-secondary" style={{ maxWidth: 560, marginTop: 'var(--sp-4)' }}>
+              Get ready to compete and represent your department in our next campus-wide strength and fitness challenges.
+            </p>
+          </div>
+          <div className="grid-3" style={{ marginTop: 'var(--sp-8)' }}>
+            {[
+              {
+                title: 'Powerlifting Championship',
+                date: 'October 12, 2026',
+                desc: 'Annual Squat, Bench, and Deadlift competition. Open for all eligible student weight categories.',
+                tag: 'Oct 12'
+              },
+              {
+                title: 'Calisthenics Challenge',
+                date: 'November 05, 2026',
+                desc: 'Push bodyweight boundaries with max pull-ups, parallel bar dips, and plank hold contests.',
+                tag: 'Nov 05'
+              },
+              {
+                title: 'Arm Wrestling Clash',
+                date: 'November 20, 2026',
+                desc: 'Departmental showdown in arm wrestling brackets. Trophies and certificates for all winners.',
+                tag: 'Nov 20'
+              }
+            ].map(({ title, date, desc, tag }, i) => (
+              <div key={title} className="card card-red-hover fade-in" style={{ transitionDelay: `${i * 100}ms` }}>
+                <span className="tag" style={{ marginBottom: 'var(--sp-3)' }}>{tag}</span>
+                <h3 className="heading-md" style={{ marginBottom: 'var(--sp-2)' }}>{title}</h3>
+                <span className="body-xs text-muted" style={{ display: 'block', marginBottom: 'var(--sp-3)' }}>{date}</span>
+                <p className="body-sm text-secondary">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="fade-in" style={{ textAlign: 'center', marginTop: 'var(--sp-8)' }}>
+            <Link to="/events" className="btn btn-outline">
+              View Event Details <ArrowRight size={18} />
             </Link>
           </div>
         </div>

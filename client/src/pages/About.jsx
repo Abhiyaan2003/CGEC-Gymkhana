@@ -2,19 +2,29 @@ import { Target, Users, Award, BookOpen } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import CtaBanner from '../components/CtaBanner'
 import './PageCommon.css'
+import './About.css'
 
 const milestones = [
   { year: '2018', event: 'Gymkhana established by Physical Education Department' },
-  { year: '2020', event: 'Major equipment upgrade — cardio zone introduced' },
+  { year: '2020', event: 'Major equipment upgrade — strength & cable zone introduced' },
   { year: '2022', event: 'Crossed 300 active student members' },
   { year: '2024', event: 'Inter-college fitness event hosted on campus' },
   { year: '2025', event: 'Slot-based booking system introduced' },
 ]
 
-const team = [
-  { role: 'Gym In-Charge', name: 'Physical Education Department', desc: 'Oversees daily operations, safety, and equipment maintenance.' },
-  { role: 'Student Committee', name: 'Sports & Wellness Council', desc: 'Elected student body that manages scheduling and member communication.' },
+
+
+const committee = [
+  { position: 'Faculty Advisor', name: 'Prof. Somen Mondal', dept: 'HOD, CSE', photo: '' },
+  { position: 'In-charge', name: 'Abhiyaan Mahato', dept: '3rd Year CSE', photo: '' },
+  { position: 'Co-Incharge', name: 'Balaram Mandi', dept: '3rd Year EE', photo: '' },
+  { position: 'Male Coordinator', name: 'Debayan Sarkar', dept: '3rd Year CSE', photo: '' },
+  { position: 'Female Coordinator', name: 'Mousumi Khan', dept: '3rd Year EE', photo: '' },
+  { position: 'Finance', name: 'Anal Kumar Saren', dept: '3rd Year EE', photo: '' },
+  { position: 'Member', name: 'Ayush Nagendra Patwa', dept: '2nd Year CE', photo: '' },
+  { position: 'Member', name: 'Mayanka Biswas', dept: '2nd Year ECE', photo: '' },
 ]
+
 
 export default function About() {
   const ref1 = useScrollReveal()
@@ -98,19 +108,38 @@ export default function About() {
       <section className="section" ref={ref3}>
         <div className="container">
           <div className="section-header fade-in">
-            <span className="label text-red">Management</span>
+            <span className="label text-red">Committee</span>
             <div className="divider" style={{ margin: 'var(--sp-3) 0' }} />
-            <h2 className="display-md">Who Runs the Gymkhana</h2>
+            <h2 className="display-md">Gymkhana Committee</h2>
+            <p className="body-lg text-secondary" style={{ maxWidth: 640, marginTop: 'var(--sp-4)' }}>
+              The official college-appointed fitness council responsible for slot bookings, equipment maintenance, finance tracking, and general oversight of the facility.
+            </p>
           </div>
-          <div className="grid-2" style={{ marginTop: 'var(--sp-8)' }}>
-            {team.map(({ role, name, desc }, i) => (
-              <div key={role} className="card card-red-hover fade-in" style={{ transitionDelay: `${i * 100}ms` }}>
-                <div className="tag" style={{ marginBottom: 'var(--sp-4)' }}>{role}</div>
-                <h3 className="heading-lg" style={{ marginBottom: 'var(--sp-2)' }}>{name}</h3>
-                <p className="body-md text-secondary">{desc}</p>
-              </div>
-            ))}
+
+          {/* Committee Cards Grid */}
+          <div className="committee-section fade-in" style={{ marginTop: 'var(--sp-8)' }}>
+            <div className="committee-grid">
+              {committee.map(({ position, name, dept, photo }, idx) => (
+                <div key={idx} className="committee-card">
+                  <div className="committee-card__photo-container">
+                    {photo ? (
+                      <img src={photo} alt={name} className="committee-card__photo" />
+                    ) : (
+                      <div className="committee-card__placeholder">
+                        <Users size={32} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="committee-card__details">
+                    <span className="committee-card__role" style={{ fontWeight: '800' }}>{position}</span>
+                    <h4 className="committee-card__name">{name}</h4>
+                    <span className="committee-card__dept">{dept}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+
 
           {/* Timeline */}
           <div className="about-timeline fade-in" style={{ marginTop: 'var(--sp-16)' }}>

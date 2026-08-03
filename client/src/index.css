@@ -24,8 +24,9 @@
   --text-inverse: #0A0A0A;
 
   /* Typography */
-  --font-display: 'Barlow Condensed', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
 
   /* Spacing (8pt grid) */
   --sp-1: 4px;

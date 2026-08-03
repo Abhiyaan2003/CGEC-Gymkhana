@@ -30,6 +30,7 @@ const ruleCategories = [
     rules: [
       { title: 'Valid student/staff ID required', desc: 'You must carry a valid CGEC student ID or staff card at all times. ID will be checked at entry — no exceptions.' },
       { title: 'Currently enrolled students only', desc: 'Access is restricted to students with active enrollment status and CGEC staff. Alumni and external guests are not permitted.' },
+      { title: 'Prioritized for 3rd & 4th Year', desc: 'Due to equipment limits and space constraints, slot allocations are prioritized primarily for 3rd and 4th-year students.' },
       { title: 'No sharing of access or ID', desc: 'Sharing your gym registration or ID with another person is a violation and will result in immediate suspension.' },
       { title: 'Guest policy — restricted', desc: 'External guests, friends, or non-enrolled individuals cannot be brought into the gym. Only registered members may enter.' },
     ],

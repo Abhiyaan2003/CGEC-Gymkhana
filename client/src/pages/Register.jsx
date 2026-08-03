@@ -113,7 +113,8 @@ export default function Register() {
               <div className="register-sidebar__card register-sidebar__note">
                 <AlertCircle size={18} className="text-red" style={{ flexShrink: 0 }} />
                 <p className="body-sm text-secondary">
-                  By submitting, you confirm that you are a current CGEC student/staff and agree to abide by all{' '}
+                  By submitting, you confirm that you are a current CGEC student/staff. Please note that gym slots are primarily prioritized and reserved for 3rd & 4th-year students due to space constraints. 
+                  You also agree to abide by all{' '}
                   <Link to="/rules" style={{ color: 'var(--red-400)' }}>Rules & Regulations</Link> and{' '}
                   <Link to="/terms" style={{ color: 'var(--red-400)' }}>Terms & Conditions</Link>.
                 </p>

@@ -8,6 +8,7 @@ import Contact from './pages/Contact'
 import Rules from './pages/Rules'
 import Terms from './pages/Terms'
 import Register from './pages/Register'
+import Events from './pages/Events'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/facilities" element={<Layout><Facilities /></Layout>} />
+        <Route path="/events" element={<Layout><Events /></Layout>} />
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
         <Route path="/rules" element={<Layout><Rules /></Layout>} />
         <Route path="/terms" element={<Layout><Terms /></Layout>} />

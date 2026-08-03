@@ -9,6 +9,7 @@ const terms = [
     content: null,
     list: [
       'Access to the CGEC Gymkhana is restricted to currently enrolled students of the College of Government Engineering & Science (CGEC) and authorized staff members.',
+      'Due to capacity and facility limitations, access slots are primarily prioritized and reserved for 3rd and 4th-year students.',
       'Enrollment status is verified each academic semester. Students who are on leave, have graduated, or are otherwise not active are not eligible.',
       'A valid, government-issued student ID or college-issued identification card must be presented upon entry.',
       'The management reserves the right to verify eligibility at any time and may deny access to those who cannot provide valid identification.',

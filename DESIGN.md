@@ -87,8 +87,8 @@ The color system uses a strict Midnight Black primary canvas with a high-energy 
 
 ## Typography
 
-**Display Font:** Barlow Condensed (with sans-serif fallback)
-**Body Font:** Inter (with sans-serif fallback)
+**Display Font:** Syne (with sans-serif fallback)
+**Body Font:** Plus Jakarta Sans (with sans-serif fallback)
 
 ### Hierarchy
 - **Display XL** (Extra Bold 800, clamp(56px, 10vw, 120px), line-height 0.92): Large display headlines, hero banners, and high-impact statements. Always uppercase.
@@ -100,8 +100,8 @@ The color system uses a strict Midnight Black primary canvas with a high-energy 
 - **Label** (Semi Bold 600, 11px, letter-spacing 0.12em): Section tags, uppercase metadata, and sub-labels.
 
 ### Named Rules
-**The Heavy Case Rule.** All headings using `Barlow Condensed` must be styled in uppercase to project a structured, athletic feel.
-**The Contrast Rhythm Rule.** Display headers in Barlow Condensed should contrast heavily against the clean, highly legible geometric Inter body font.
+**The Heavy Case Rule.** All headings using `Syne` must be styled in uppercase to project a structured, athletic feel.
+**The Contrast Rhythm Rule.** Display headers in Syne should contrast heavily against the clean, highly legible geometric Plus Jakarta Sans body font.
 
 ## Layout
 
