@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { CheckCircle, AlertCircle, User, Mail, Phone, Hash, BookOpen, Calendar, Users, Clock, Heart, FileText } from 'lucide-react'
+import { CheckCircle, AlertCircle, User, Mail, Phone, Hash, BookOpen, Calendar, Users, Clock, Heart, FileText, CreditCard } from 'lucide-react'
 import './PageCommon.css'
 import './Register.css'
 
@@ -23,12 +23,15 @@ const steps = [
   { label: 'Personal Info', icon: <User size={16} /> },
   { label: 'Academic Details', icon: <BookOpen size={16} /> },
   { label: 'Preferences', icon: <Clock size={16} /> },
+  { label: 'Payment', icon: <CreditCard size={16} /> },
   { label: 'Confirmation', icon: <FileText size={16} /> },
 ]
 
 export default function Register() {
   const [currentStep, setCurrentStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
 
   const {
     register,
@@ -42,6 +45,7 @@ export default function Register() {
     ['fullName', 'email', 'phone', 'dob', 'gender'],
     ['rollNumber', 'department', 'year'],
     ['slot', 'emergencyName', 'emergencyPhone'],
+    ['transactionId'],
     ['agree'],
   ]
 
@@ -52,9 +56,47 @@ export default function Register() {
 
   const prevStep = () => setCurrentStep((s) => s - 1)
 
-  const onSubmit = (data) => {
-    console.log('Registration data:', data)
-    setSubmitted(true)
+  const onSubmit = async (data) => {
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    const scriptURL = import.meta.env.VITE_APPS_SCRIPT_URL
+
+    if (!scriptURL) {
+      console.warn('VITE_APPS_SCRIPT_URL is not set. Simulating form submission.')
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      setSubmitted(true)
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      if (result.status === 'success') {
+        setSubmitted(true)
+      } else {
+        throw new Error(result.message || 'Failed to submit registration details.')
+      }
+    } catch (err) {
+      console.error('Submission error:', err)
+      setSubmitError(
+        'Failed to submit registration. Please check your internet connection and try again, or contact the Gymkhana Committee directly.'
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -283,10 +325,74 @@ export default function Register() {
                     </div>
                   )}
 
-                  {/* Step 3: Confirmation */}
+                  {/* Step 3: Payment */}
                   {currentStep === 3 && (
                     <div className="register-step" aria-labelledby="step3-heading">
-                      <h2 id="step3-heading" className="display-sm register-step__title">Review & Submit</h2>
+                      <h2 id="step3-heading" className="display-sm register-step__title">Registration Fee Payment</h2>
+                      <p className="body-sm text-secondary" style={{ marginBottom: 'var(--sp-5)' }}>
+                        Please scan the QR code below using any UPI app (GPay, PhonePe, Paytm, BHIM) to pay the gym registration fee. Enter the 12-digit Transaction ID (UTR) below to verify your payment.
+                      </p>
+                      
+                      <div className="payment-container" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: 'var(--sp-5)',
+                        background: 'var(--bg-elevated)',
+                        border: '1px solid var(--border)',
+                        borderRadius: 'var(--radius-lg)',
+                        padding: 'var(--sp-6)',
+                        marginBottom: 'var(--sp-6)'
+                      }}>
+                        <img 
+                          src="/qr_code.png" 
+                          alt="CGEC Gymkhana UPI QR Code" 
+                          style={{
+                            maxWidth: '220px',
+                            width: '100%',
+                            borderRadius: 'var(--radius-md)',
+                            border: '4px solid #fff',
+                            boxShadow: 'var(--shadow-card)'
+                          }} 
+                        />
+                        
+                        <div style={{ textAlign: 'center' }}>
+                          <span className="label text-muted" style={{ display: 'block', marginBottom: 'var(--sp-1)' }}>UPI ID</span>
+                          <code style={{
+                            background: 'var(--bg-base)',
+                            padding: 'var(--sp-2) var(--sp-4)',
+                            borderRadius: 'var(--radius-sm)',
+                            border: '1px solid var(--border)',
+                            fontSize: '14px',
+                            color: 'var(--red-400)',
+                            fontFamily: 'var(--font-mono)'
+                          }}>
+                            8100405291@mbk
+                          </code>
+                          <p className="body-xs text-muted" style={{ marginTop: 'var(--sp-2)' }}>
+                            Account Name: CGEC GYMKHANA (ANAL KUMAR SAREN)
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="transactionId" className="form-label">UPI Transaction ID / UTR <span className="required">*</span></label>
+                        <input id="transactionId" type="text" className={`form-control ${errors.transactionId ? 'error' : ''}`}
+                          placeholder="Enter 12-digit Transaction ID"
+                          {...register('transactionId', { 
+                            required: 'Transaction ID is required',
+                            pattern: { value: /^\d{12}$/, message: 'Enter a valid 12-digit numeric UPI UTR / Transaction ID' }
+                          })} />
+                        {errors.transactionId && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.transactionId.message}</span>}
+                        <span className="form-helper">Ensure you enter the correct 12-digit number from your payment receipt.</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 4: Confirmation */}
+                  {currentStep === 4 && (
+                    <div className="register-step" aria-labelledby="step4-heading">
+                      <h2 id="step4-heading" className="display-sm register-step__title">Review & Submit</h2>
 
                       {/* Summary */}
                       <div className="register-summary">
@@ -299,6 +405,7 @@ export default function Register() {
                           { label: 'Department', value: getValues('department') },
                           { label: 'Year', value: getValues('year') },
                           { label: 'Preferred Slot', value: getValues('slot') },
+                          { label: 'Transaction ID', value: getValues('transactionId') },
                         ].map(({ label, value }) => (
                           <div key={label} className="register-summary__row">
                             <span className="body-xs text-muted">{label}</span>
@@ -328,10 +435,27 @@ export default function Register() {
                     </div>
                   )}
 
+                  {submitError && (
+                    <div className="form-error-alert" style={{
+                      display: 'flex',
+                      gap: 'var(--sp-3)',
+                      alignItems: 'center',
+                      background: 'rgba(225, 6, 0, 0.04)',
+                      border: '1px solid rgba(225, 6, 0, 0.15)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: 'var(--sp-4)',
+                      marginTop: 'var(--sp-6)',
+                      color: 'var(--red-400)'
+                    }}>
+                      <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                      <span className="body-sm">{submitError}</span>
+                    </div>
+                  )}
+
                   {/* Navigation Buttons */}
                   <div className="register-nav">
                     {currentStep > 0 && (
-                      <button type="button" className="btn btn-outline" onClick={prevStep}>
+                      <button type="button" className="btn btn-outline" onClick={prevStep} disabled={isSubmitting}>
                         ← Back
                       </button>
                     )}
@@ -341,8 +465,16 @@ export default function Register() {
                           Continue →
                         </button>
                       ) : (
-                        <button type="submit" className="btn btn-primary">
-                          Submit Registration <CheckCircle size={18} />
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                          {isSubmitting ? (
+                            <>
+                              Submitting <span className="spinner-loader" style={{ marginLeft: 'var(--sp-2)' }} />
+                            </>
+                          ) : (
+                            <>
+                              Submit Registration <CheckCircle size={18} />
+                            </>
+                          )}
                         </button>
                       )}
                     </div>
