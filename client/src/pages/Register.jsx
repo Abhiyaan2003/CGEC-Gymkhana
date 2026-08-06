@@ -165,6 +165,12 @@ export default function Register() {
 
             {/* Form */}
             <div className="register-form-col">
+              {/* Mobile Step Counter Header */}
+              <div className="register-mobile-counter" aria-hidden="true">
+                <span className="register-mobile-counter__badge">Step {currentStep + 1} of {steps.length}</span>
+                <span className="register-mobile-counter__title">{steps[currentStep].label}</span>
+              </div>
+
               {/* Progress steps */}
               <div className="register-progress" aria-label="Registration progress">
                 {steps.map((step, i) => (

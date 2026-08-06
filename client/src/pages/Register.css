@@ -63,6 +63,12 @@
   margin-bottom: var(--sp-6);
   overflow-x: auto;
   padding-bottom: var(--sp-2);
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.register-progress::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .register-progress__step {
@@ -73,8 +79,8 @@
 }
 
 .register-progress__icon {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -109,6 +115,7 @@
 
 .register-progress__step.active .register-progress__label {
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 .register-progress__step.done .register-progress__label {
@@ -117,7 +124,7 @@
 
 .register-progress__line {
   height: 2px;
-  width: 40px;
+  width: 36px;
   background: var(--border);
   margin: 0 var(--sp-2);
   border-radius: var(--radius-full);
@@ -127,6 +134,32 @@
 
 .register-progress__line.done {
   background: var(--red-500);
+}
+
+/* Mobile Step Header Counter */
+.register-mobile-counter {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.register-mobile-counter__badge {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--red-400);
+}
+
+.register-mobile-counter__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 /* Form card */
@@ -147,6 +180,13 @@
   gap: var(--sp-5);
 }
 
+/* Form controls mobile friendliness */
+.register-fields .form-control,
+.form-group .form-control {
+  min-height: 46px;
+  font-size: 15px;
+}
+
 /* Nav buttons */
 .register-nav {
   display: flex;
@@ -155,6 +195,13 @@
   margin-top: var(--sp-8);
   padding-top: var(--sp-6);
   border-top: 1px solid var(--border);
+}
+
+.register-nav__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
 }
 
 /* Summary */
@@ -170,9 +217,10 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: var(--sp-2) 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--border);
   gap: var(--sp-4);
+  word-break: break-word;
 }
 
 .register-summary__row:last-child {
@@ -185,38 +233,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--sp-10);
+  padding: var(--sp-8) var(--sp-4);
 }
 
 .register-success-card {
   text-align: center;
   max-width: 560px;
+  width: 100%;
 }
 
 .register-success-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
+  width: 88px;
+  height: 88px;
   background: var(--red-subtle);
   border-radius: 50%;
   color: var(--red-500);
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .register-layout {
-    grid-template-columns: 1fr;
-  }
-  .register-sidebar {
-    position: static;
-  }
-}
-
-@media (max-width: 640px) {
-  .register-form-card { padding: var(--sp-5) !important; }
-  .register-progress__label { display: none; }
 }
 
 /* Spinner Loader */
@@ -241,3 +275,93 @@
   box-shadow: none !important;
 }
 
+/* ── Mobile & Tablet Responsiveness ── */
+@media (max-width: 1024px) {
+  .register-layout {
+    grid-template-columns: 1fr;
+    gap: var(--sp-8);
+  }
+
+  .register-form-col {
+    order: 1;
+  }
+
+  .register-sidebar {
+    order: 2;
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-form-card {
+    padding: var(--sp-6) !important;
+  }
+
+  .register-step__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--sp-5);
+    padding-bottom: var(--sp-3);
+  }
+
+  .register-mobile-counter {
+    display: flex;
+  }
+}
+
+@media (max-width: 576px) {
+  .register-form-card {
+    padding: var(--sp-4) !important;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Prevent iOS zoom on input focus */
+  .register-fields .form-control,
+  .form-group .form-control {
+    font-size: 16px !important;
+    padding: var(--sp-3) 14px;
+  }
+
+  .register-progress {
+    gap: 0;
+    justify-content: space-between;
+  }
+
+  .register-progress__line {
+    width: 16px;
+    margin: 0 var(--sp-1);
+  }
+
+  .register-progress__label {
+    display: none;
+  }
+
+  .register-nav {
+    flex-direction: column-reverse;
+    gap: var(--sp-3);
+  }
+
+  .register-nav button,
+  .register-nav .btn {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  .register-nav__right {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .register-summary__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .payment-container {
+    padding: var(--sp-4) !important;
+  }
+
+  .payment-container img {
+    max-width: 170px !important;
+  }
+}
