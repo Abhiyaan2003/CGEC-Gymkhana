@@ -71,24 +71,18 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch(scriptURL, {
+      // Use mode: 'no-cors' for Google Apps Script Web Apps to prevent CORS redirect errors.
+      await fetch(scriptURL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain',
         },
         body: JSON.stringify(data),
       })
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
-      const result = await response.json()
-      if (result.status === 'success') {
-        setSubmitted(true)
-      } else {
-        throw new Error(result.message || 'Failed to submit registration details.')
-      }
+      // With mode: 'no-cors', if fetch does not throw a network error, the request reached Google Apps Script.
+      setSubmitted(true)
     } catch (err) {
       console.error('Submission error:', err)
       setSubmitError(
