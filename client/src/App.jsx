@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import TopographicBackground from './components/TopographicBackground'
 import Home from './pages/Home'
 import About from './pages/About'
 import Facilities from './pages/Facilities'
@@ -11,6 +12,8 @@ import Register from './pages/Register'
 import Events from './pages/Events'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import Lenis from 'lenis'
+import { gsap, ScrollTrigger } from './lib/gsapSetup'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -23,6 +26,7 @@ function ScrollToTop() {
 function Layout({ children }) {
   return (
     <div className="page-wrapper">
+      <TopographicBackground variant="fixed" lineOpacity={0.24} density={12} interactive={true} />
       <Navbar />
       <main id="main-content" className="main-content">
         {children}
@@ -33,6 +37,21 @@ function Layout({ children }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) return
+
+    const lenis = new Lenis({ duration: 1.1, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+    lenis.on('scroll', ScrollTrigger.update)
+    const ticker = (time) => lenis.raf(time * 1000)
+    gsap.ticker.add(ticker)
+    gsap.ticker.lagSmoothing(0)
+
+    return () => {
+      gsap.ticker.remove(ticker)
+      lenis.destroy()
+    }
+  }, [])
   return (
     <BrowserRouter>
       <a href="#main-content" className="skip-link">Skip to main content</a>

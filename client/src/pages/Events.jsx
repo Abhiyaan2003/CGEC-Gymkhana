@@ -83,52 +83,81 @@ export default function Events() {
             <h2 className="display-md">Scheduled Competitions</h2>
           </div>
 
-          <div className="events-grid">
-            {upcomingEvents.map((evt, idx) => (
-              <div key={evt.title} className="fade-in" style={{ transitionDelay: `${idx * 80}ms` }}>
-                <div className="card card-red-hover event-card">
-                  <div className="event-card__header">
-                    <span className="tag">{evt.tag}</span>
-                    <span className={`label ${evt.status === 'Registering' ? 'text-red' : 'text-muted'}`}>
-                      {evt.status}
-                    </span>
-                  </div>
-                  <h3 className="heading-lg" style={{ marginTop: 'var(--sp-2)' }}>{evt.title}</h3>
-                  <p className="body-sm text-secondary" style={{ marginTop: 'var(--sp-3)' }}>{evt.desc}</p>
-                  
-                  <div className="event-card__meta">
-                    <div className="event-meta-item">
-                      <Calendar size={15} />
-                      <span>{evt.date}</span>
+          <div style={{ position: 'relative' }}>
+            <div className="events-grid" style={{ filter: 'blur(5px)', opacity: 0.35, pointerEvents: 'none', userSelect: 'none' }}>
+              {upcomingEvents.map((evt, idx) => (
+                <div key={evt.title} className="fade-in" style={{ transitionDelay: `${idx * 80}ms` }}>
+                  <div className="card card-red-hover event-card">
+                    <div className="event-card__header">
+                      <span className="tag">{evt.tag}</span>
+                      <span className={`label ${evt.status === 'Registering' ? 'text-red' : 'text-muted'}`}>
+                        {evt.status}
+                      </span>
                     </div>
-                    <div className="event-meta-item">
-                      <Clock size={15} />
-                      <span>{evt.time}</span>
+                    <h3 className="heading-lg" style={{ marginTop: 'var(--sp-2)' }}>{evt.title}</h3>
+                    <p className="body-sm text-secondary" style={{ marginTop: 'var(--sp-3)' }}>{evt.desc}</p>
+                    
+                    <div className="event-card__meta">
+                      <div className="event-meta-item">
+                        <Calendar size={15} />
+                        <span>{evt.date}</span>
+                      </div>
+                      <div className="event-meta-item">
+                        <Clock size={15} />
+                        <span>{evt.time}</span>
+                      </div>
+                      <div className="event-meta-item">
+                        <MapPin size={15} />
+                        <span>{evt.venue}</span>
+                      </div>
+                      <div className="event-meta-item">
+                        <User size={15} />
+                        <span>Coordinators: {evt.coordinator}</span>
+                      </div>
                     </div>
-                    <div className="event-meta-item">
-                      <MapPin size={15} />
-                      <span>{evt.venue}</span>
-                    </div>
-                    <div className="event-meta-item">
-                      <User size={15} />
-                      <span>Coordinators: {evt.coordinator}</span>
-                    </div>
-                  </div>
 
-                  <div className="event-card__footer">
-                    {evt.status === 'Registering' ? (
-                      <Link to={evt.registerPath} className="btn btn-outline btn-sm w-full">
-                        Register Now <ArrowRight size={14} />
-                      </Link>
-                    ) : (
-                      <button className="btn btn-sm btn-disabled w-full" disabled>
-                        Registrations Not Open
-                      </button>
-                    )}
+                    <div className="event-card__footer">
+                      {evt.status === 'Registering' ? (
+                        <Link to={evt.registerPath} className="btn btn-outline btn-sm w-full">
+                          Register Now <ArrowRight size={14} />
+                        </Link>
+                      ) : (
+                        <button className="btn btn-sm btn-disabled w-full" disabled>
+                          Registrations Not Open
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 10,
+              padding: 'var(--sp-4)'
+            }}>
+              <div style={{
+                background: 'rgba(10, 10, 10, 0.8)',
+                border: '1px solid rgba(239, 68, 68, 0.2)',
+                padding: 'var(--sp-6) var(--sp-10)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.8)',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'center',
+                maxWidth: '360px'
+              }}>
+                <h3 className="display-sm text-gradient" style={{ margin: 0, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--red-500)' }}>
+                  Coming Soon
+                </h3>
+                <p className="body-sm text-secondary" style={{ marginTop: 'var(--sp-2)', marginBottom: 0 }}>
+                  We are finalising dates and guidelines. Stay tuned for registration updates!
+                </p>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

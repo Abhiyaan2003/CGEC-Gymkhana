@@ -33,8 +33,8 @@ export default function Navbar() {
       <div className="container navbar__inner">
         {/* Logo */}
         <Link to="/" className="navbar__logo" aria-label="CGEC Gymkhana Home">
-          <div className="navbar__logo-icon">
-            <Dumbbell size={20} strokeWidth={2.5} />
+          <div className="navbar__logo-container">
+            <img src="/logo.png" alt="CGEC Gymkhana Logo" className="navbar__logo-img" />
           </div>
           <div className="navbar__logo-text">
             <span className="navbar__logo-primary">CGEC</span>

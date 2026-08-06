@@ -1,0 +1,156 @@
+/* ══════════════════════════════════════════════
+   HorizontalStrip — scroll-driven photo sequence
+   ══════════════════════════════════════════════ */
+
+.hstrip {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--bg-base);
+  will-change: transform;
+}
+
+/* The long horizontal row */
+.hstrip__track {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 32px;
+  padding: var(--sp-16) 48px;
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── Image item ── */
+.hstrip__item {
+  flex: 0 0 auto;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.hstrip__img-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.hstrip__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hstrip__item:hover .hstrip__img {
+  transform: scale(1.04);
+}
+
+.hstrip__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: var(--sp-1);
+  border-left: 2px solid var(--red-500);
+  padding-left: var(--sp-3);
+}
+
+.hstrip__label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+.hstrip__sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+/* ── Quote card ── */
+.hstrip__quote {
+  flex: 0 0 auto;
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-6);
+  padding: var(--sp-10) var(--sp-8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  align-self: center;
+  min-height: 260px;
+}
+
+.hstrip__quote-text {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  quotes: none;
+}
+
+.hstrip__quote-line {
+  width: 40px;
+  height: 2px;
+  background: var(--red-500);
+  border-radius: 1px;
+}
+
+/* ── Reduced motion: static wrap ── */
+@media (prefers-reduced-motion: reduce) {
+  .hstrip {
+    overflow: visible;
+  }
+  .hstrip__track {
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hstrip__item {
+    width: calc(50% - 16px);
+  }
+  .hstrip__quote {
+    width: 100%;
+  }
+}
+
+/* ── Mobile: Vertical responsive layout without horizontal scroll ── */
+@media (max-width: 768px) {
+  .hstrip {
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    padding: var(--sp-12) 0;
+  }
+  .hstrip__track {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 var(--sp-4);
+    gap: var(--sp-8);
+    transform: none !important;
+  }
+  .hstrip__item {
+    width: 100%;
+  }
+  .hstrip__quote {
+    width: 100%;
+    min-height: 180px;
+    padding: var(--sp-6) var(--sp-5);
+  }
+}

@@ -4,13 +4,7 @@ import CtaBanner from '../components/CtaBanner'
 import './PageCommon.css'
 import './About.css'
 
-const milestones = [
-  { year: '2018', event: 'Gymkhana established by Physical Education Department' },
-  { year: '2020', event: 'Major equipment upgrade — strength & cable zone introduced' },
-  { year: '2022', event: 'Crossed 300 active student members' },
-  { year: '2024', event: 'Inter-college fitness event hosted on campus' },
-  { year: '2025', event: 'Slot-based booking system introduced' },
-]
+
 
 
 
@@ -135,25 +129,6 @@ export default function About() {
                     <h4 className="committee-card__name">{name}</h4>
                     <span className="committee-card__dept">{dept}</span>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-
-          {/* Timeline */}
-          <div className="about-timeline fade-in" style={{ marginTop: 'var(--sp-16)' }}>
-            <div className="section-header">
-              <span className="label text-red">Milestones</span>
-              <div className="divider" style={{ margin: 'var(--sp-3) 0' }} />
-              <h2 className="display-md">Our Journey</h2>
-            </div>
-            <div className="timeline">
-              {milestones.map(({ year, event }, i) => (
-                <div key={year} className="timeline__item">
-                  <div className="timeline__dot" />
-                  <div className="timeline__year">{year}</div>
-                  <div className="timeline__event body-md text-secondary">{event}</div>
                 </div>
               ))}
             </div>

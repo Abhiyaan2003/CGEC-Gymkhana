@@ -360,3 +360,67 @@
   .hero__mini-stats { gap: var(--sp-6); flex-wrap: wrap; justify-content: center; }
   .stats-bar__inner { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ── Hover Crossfade Equipment Cards ─────────── */
+.equip-xfade {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  /* fixes Safari clip */
+}
+
+.equip-xfade__base {
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.35s ease;
+  height: 100%;
+}
+
+.equip-xfade__hover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: var(--radius-md);
+}
+
+.equip-xfade__overlay {
+  position: absolute;
+  inset: 0;
+  padding: var(--sp-5);
+  background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.3) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: var(--radius-md);
+}
+
+.equip-xfade:hover .equip-xfade__hover,
+.equip-xfade:focus-within .equip-xfade__hover { opacity: 1; }
+
+.equip-xfade__top { display: flex; align-items: center; justify-content: space-between; }
+
+/* ── Coming Soon overlay ─────────────────────── */
+.coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.coming-soon-card {
+  background: rgba(10,10,10,0.82);
+  border: 1px solid rgba(225,6,0,0.2);
+  padding: var(--sp-6) var(--sp-10);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  max-width: 360px;
+}
+

@@ -1,0 +1,59 @@
+/* ── PreloadGate ─────────────────────────────── */
+.preload {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.preload--out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.preload__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-6);
+}
+
+.preload__logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 50%;
+  animation: preload-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes preload-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1);    }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+.preload__track {
+  width: 160px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.preload__bar {
+  height: 100%;
+  background: var(--red-500);
+  border-radius: 1px;
+  transition: width 0.2s ease;
+  box-shadow: 0 0 8px var(--red-glow);
+}
+
+.preload__pct {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}

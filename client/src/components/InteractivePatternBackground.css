@@ -1,0 +1,54 @@
+/* ===== Interactive Pattern Background — Vector Topography & Crimson Interaction ===== */
+
+.interactive-pattern-bg-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.interactive-pattern-svg-bg {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 800px 800px;
+  opacity: 0.28;
+  filter: contrast(1.15) brightness(1.2);
+  mix-blend-mode: screen;
+  animation: topoDrift 100s linear infinite;
+}
+
+@keyframes topoDrift {
+  0% {
+    background-position: 0px 0px;
+  }
+  100% {
+    background-position: 0px 800px;
+  }
+}
+
+.interactive-pattern-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+}
+
+.pattern-radial-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 20%,
+    rgba(10, 10, 10, 0.4) 70%,
+    rgba(10, 10, 10, 0.85) 100%
+  );
+  pointer-events: none;
+}
