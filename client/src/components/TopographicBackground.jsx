@@ -96,7 +96,7 @@ function createSimplexNoise() {
 }
 
 /**
- * TopographicBackground Component — 60 FPS Ultra-Optimized Edition
+ * TopographicBackground Component — Zero-GC 60 FPS Smooth Rendering
  */
 export default function TopographicBackground({
   variant = 'absolute',
@@ -116,7 +116,7 @@ export default function TopographicBackground({
     const canvas = canvasRef.current
     if (!container || !canvas) return
 
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: true })
     const noise3D = createSimplexNoise()
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -124,7 +124,6 @@ export default function TopographicBackground({
     let isVisible = true
     let width = 0
     let height = 0
-    let dpr = 1
 
     const mouse = {
       x: -1000,
@@ -149,8 +148,8 @@ export default function TopographicBackground({
       return colorStr
     }
 
-    // High performance cell size (24px grid)
-    const cellSize = 24
+    // 28px cell size for smooth high-speed rendering
+    const cellSize = 28
     let cols = 0
     let rows = 0
     let grid = []
@@ -160,10 +159,10 @@ export default function TopographicBackground({
       width = rect.width || window.innerWidth
       height = rect.height || window.innerHeight
 
-      // Cap dpr at 1.5 for silky 60fps rendering without GPU overload
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5)
-      canvas.width = width * dpr
-      canvas.height = height * dpr
+      // Cap DPR at 1 to eliminate rendering overhead during scroll
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.25)
+      canvas.width = Math.floor(width * dpr)
+      canvas.height = Math.floor(height * dpr)
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
 
@@ -188,7 +187,7 @@ export default function TopographicBackground({
           isVisible = entry.isIntersecting
         })
       },
-      { threshold: 0.05 }
+      { threshold: 0.02 }
     )
     intersectionObserver.observe(container)
 
@@ -218,7 +217,7 @@ export default function TopographicBackground({
     let resolvedLineColor = resolveColor(lineColor)
     let resolvedBgColor = resolveColor(backgroundColor)
 
-    // Iso threshold levels pre-calculation
+    // Pre-calculated Iso Thresholds
     const levels = Math.max(3, density)
     const isoThresholds = new Float32Array(levels)
     const isoStep = 0.78 / (levels + 1)
@@ -233,22 +232,17 @@ export default function TopographicBackground({
       return (iso - val1) / (val2 - val1)
     }
 
-    let lastTime = performance.now()
-
-    const render = (now) => {
+    const render = () => {
       if (!isVisible) {
         animationFrameId = requestAnimationFrame(render)
         return
       }
 
-      const dt = Math.min((now - lastTime) / 1000, 0.1)
-      lastTime = now
-
       if (!prefersReducedMotion) {
-        time += 0.0012 * speed
+        time += 0.001 * speed
       }
 
-      // Smooth mouse spring
+      // Smooth mouse spring lerp
       mouse.x += (mouse.targetX - mouse.x) * 0.1
       mouse.y += (mouse.targetY - mouse.y) * 0.1
       mouse.warpStrength += (mouse.targetWarpStrength - mouse.warpStrength) * 0.04
@@ -260,13 +254,14 @@ export default function TopographicBackground({
         ctx.fillRect(0, 0, width, height)
       }
 
-      const noiseScale = 0.0028
-      const warpRadius = 240
+      const noiseScale = 0.0025
+      const warpRadius = 220
       const warpRadiusSq = warpRadius * warpRadius
 
       // Single-pass noise grid computation
       for (let r = 0; r < rows; r++) {
         const y = r * cellSize
+        const rowOffset = r * cols
         for (let c = 0; c < cols; c++) {
           const x = c * cellSize
 
@@ -280,17 +275,17 @@ export default function TopographicBackground({
             if (distSq < warpRadiusSq && distSq > 0.1) {
               const dist = Math.sqrt(distSq)
               const factor = (1 - dist / warpRadius) * mouse.warpStrength
-              const push = factor * 26
+              const push = factor * 24
               sampleX += (dx / dist) * push
               sampleY += (dy / dist) * push
             }
           }
 
-          grid[r * cols + c] = noise3D(sampleX * noiseScale, sampleY * noiseScale, time)
+          grid[rowOffset + c] = noise3D(sampleX * noiseScale, sampleY * noiseScale, time)
         }
       }
 
-      // Single-pass Marching Squares Isoline Contours across all iso levels
+      // Zero-allocation Marching Squares Isoline Rendering
       ctx.strokeStyle = resolvedLineColor
       ctx.globalAlpha = lineOpacity
       ctx.lineWidth = lineWidth
@@ -300,19 +295,21 @@ export default function TopographicBackground({
       ctx.beginPath()
 
       for (let r = 0; r < rows - 1; r++) {
+        const y0 = r * cellSize
+        const r0 = r * cols
+        const r1 = (r + 1) * cols
+
         for (let c = 0; c < cols - 1; c++) {
           const x0 = c * cellSize
-          const y0 = r * cellSize
 
-          const v0 = grid[r * cols + c]
-          const v1 = grid[r * cols + (c + 1)]
-          const v2 = grid[(r + 1) * cols + (c + 1)]
-          const v3 = grid[(r + 1) * cols + c]
+          const v0 = grid[r0 + c]
+          const v1 = grid[r0 + c + 1]
+          const v2 = grid[r1 + c + 1]
+          const v3 = grid[r1 + c]
 
           const minV = Math.min(v0, v1, v2, v3)
           const maxV = Math.max(v0, v1, v2, v3)
 
-          // Check only thresholds that intersect this specific cell
           for (let l = 0; l < levels; l++) {
             const iso = isoThresholds[l]
             if (iso < minV || iso > maxV) continue
@@ -325,36 +322,40 @@ export default function TopographicBackground({
 
             if (cellState === 0 || cellState === 15) continue
 
-            const top    = { x: x0 + cellSize * lerpEdge(v0, v1, iso), y: y0 }
-            const right  = { x: x0 + cellSize, y: y0 + cellSize * lerpEdge(v1, v2, iso) }
-            const bottom = { x: x0 + cellSize * lerpEdge(v3, v2, iso), y: y0 + cellSize }
-            const left   = { x: x0, y: y0 + cellSize * lerpEdge(v0, v3, iso) }
+            const topX    = x0 + cellSize * lerpEdge(v0, v1, iso)
+            const topY    = y0
+            const rightX  = x0 + cellSize
+            const rightY  = y0 + cellSize * lerpEdge(v1, v2, iso)
+            const bottomX = x0 + cellSize * lerpEdge(v3, v2, iso)
+            const bottomY = y0 + cellSize
+            const leftX   = x0
+            const leftY   = y0 + cellSize * lerpEdge(v0, v3, iso)
 
             switch (cellState) {
               case 1:
               case 14:
-                ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y); break
+                ctx.moveTo(topX, topY); ctx.lineTo(leftX, leftY); break
               case 2:
               case 13:
-                ctx.moveTo(top.x, top.y); ctx.lineTo(right.x, right.y); break
+                ctx.moveTo(topX, topY); ctx.lineTo(rightX, rightY); break
               case 3:
               case 12:
-                ctx.moveTo(left.x, left.y); ctx.lineTo(right.x, right.y); break
+                ctx.moveTo(leftX, leftY); ctx.lineTo(rightX, rightY); break
               case 4:
               case 11:
-                ctx.moveTo(right.x, right.y); ctx.lineTo(bottom.x, bottom.y); break
+                ctx.moveTo(rightX, rightY); ctx.lineTo(bottomX, bottomY); break
               case 5:
-                ctx.moveTo(top.x, top.y); ctx.lineTo(left.x, left.y)
-                ctx.moveTo(right.x, right.y); ctx.lineTo(bottom.x, bottom.y); break
+                ctx.moveTo(topX, topY); ctx.lineTo(leftX, leftY)
+                ctx.moveTo(rightX, rightY); ctx.lineTo(bottomX, bottomY); break
               case 6:
               case 9:
-                ctx.moveTo(top.x, top.y); ctx.lineTo(bottom.x, bottom.y); break
+                ctx.moveTo(topX, topY); ctx.lineTo(bottomX, bottomY); break
               case 7:
               case 8:
-                ctx.moveTo(left.x, left.y); ctx.lineTo(bottom.x, bottom.y); break
+                ctx.moveTo(leftX, leftY); ctx.lineTo(bottomX, bottomY); break
               case 10:
-                ctx.moveTo(top.x, top.y); ctx.lineTo(right.x, right.y)
-                ctx.moveTo(left.x, left.y); ctx.lineTo(bottom.x, bottom.y); break
+                ctx.moveTo(topX, topY); ctx.lineTo(rightX, rightY)
+                ctx.moveTo(leftX, leftY); ctx.lineTo(bottomX, bottomY); break
             }
           }
         }

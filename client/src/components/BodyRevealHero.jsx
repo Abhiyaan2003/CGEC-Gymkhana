@@ -54,8 +54,15 @@ export default function BodyRevealHero() {
     }
   }, [])
 
+  const isVisibleRef = useRef(true)
+
   /* ── RAF blob tick ── */
   const tick = useCallback(() => {
+    if (!isVisibleRef.current) {
+      rafRef.current = requestAnimationFrame(tick)
+      return
+    }
+
     // Smooth lerp for mask opacity (fade in on interaction, fade out on leave)
     const targetOpacity = isInteractingRef.current ? 1 : 0
     maskOpacityRef.current += (targetOpacity - maskOpacityRef.current) * 0.14
@@ -156,6 +163,16 @@ export default function BodyRevealHero() {
     rafRef.current = requestAnimationFrame(tick)
 
     const sec = sectionRef.current
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisibleRef.current = entry.isIntersecting
+        })
+      },
+      { threshold: 0.02 }
+    )
+    if (sec) observer.observe(sec)
+
     if (!touch) {
       sec?.addEventListener('mouseenter', onMouseEnter, { passive: true })
       sec?.addEventListener('mousemove',  onMouseMove,  { passive: true })
@@ -175,6 +192,7 @@ export default function BodyRevealHero() {
     return () => {
       cancelAnimationFrame(rafRef.current)
       clearTimeout(tiltTimer.current)
+      observer.disconnect()
       window.removeEventListener('deviceorientation', onOrientation)
       sec?.removeEventListener('mouseenter', onMouseEnter)
       sec?.removeEventListener('mousemove',  onMouseMove)

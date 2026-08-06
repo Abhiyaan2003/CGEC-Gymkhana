@@ -175,8 +175,8 @@ export default function Home() {
           </div>
 
           <div style={{ position: 'relative', marginTop: 'var(--sp-8)' }}>
-            {/* Blurred placeholder cards */}
-            <div className="grid-3" style={{ filter: 'blur(5px)', opacity: 0.35, pointerEvents: 'none', userSelect: 'none' }}>
+            {/* Placeholder cards */}
+            <div className="grid-3" style={{ opacity: 0.3, pointerEvents: 'none', userSelect: 'none' }}>
               {[
                 { title: 'Powerlifting Championship', date: 'October 12, 2026',  desc: 'Annual Squat, Bench, and Deadlift competition.', tag: 'Oct 12' },
                 { title: 'Calisthenics Challenge',    date: 'November 05, 2026', desc: 'Push bodyweight boundaries with max pull-ups, dips, and plank contests.', tag: 'Nov 05' },
