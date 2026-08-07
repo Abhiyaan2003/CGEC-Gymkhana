@@ -2,7 +2,7 @@ import heroNormal from '../assets/hero_normal.png'
 import heroFit from '../assets/hero_fit.png'
 import stripWeek4 from '../assets/strip_week4.jpg'
 import stripWeek8 from '../assets/strip_week8.jpg'
-import stripWeek12 from '../assets/strip_week12.jpg'
+import after1 from '../assets/After (1).png'
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '../lib/gsapSetup'
 import './HorizontalStrip.css'
@@ -13,7 +13,7 @@ const STRIP_ITEMS = [
   { type: 'image', src: stripWeek4,  label: 'The Grind',         sub: 'Week 4'   },
   { type: 'image', src: stripWeek8,  label: 'Building Strength', sub: 'Week 8'   },
   { type: 'quote', text: 'Discipline is choosing what you want most over what you want now.' },
-  { type: 'image', src: stripWeek12, label: 'Peak Performance',  sub: 'Week 12'  },
+  { type: 'image', src: after1,      label: 'Peak Performance',  sub: 'Week 12'  },
   { type: 'image', src: heroFit,     label: 'After',             sub: '90 Days'  },
 ]
 

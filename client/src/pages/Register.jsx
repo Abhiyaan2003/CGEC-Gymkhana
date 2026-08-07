@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { CheckCircle, AlertCircle, User, Mail, Phone, Hash, BookOpen, Calendar, Users, Clock, Heart, FileText, CreditCard } from 'lucide-react'
@@ -10,14 +10,12 @@ const departments = [
   'Electrical Engineering',
   'Electronics & Communication',
   'Mechanical Engineering',
-  'Civil Engineering',
-  'Information Technology',
-  'Other',
+  'Civil Engineering'
 ]
 
-const years = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Staff']
+const years = ['1st Year', '2nd Year', '3rd Year', '4th Year']
 const slots = ['Morning (6:00 AM – 9:00 AM)', 'Evening (4:00 PM – 8:00 PM)']
-const genders = ['Male', 'Female', 'Other', 'Prefer not to say']
+const genders = ['Male', 'Female']
 
 const steps = [
   { label: 'Personal Info', icon: <User size={16} /> },
@@ -38,13 +36,27 @@ export default function Register() {
     handleSubmit,
     trigger,
     getValues,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({ mode: 'onBlur' })
+
+  const selectedYear = watch('year')
+
+  useEffect(() => {
+    if (selectedYear === '3rd Year') {
+      setValue('slot', 'Morning (6:00 AM – 9:00 AM)')
+    }
+  }, [selectedYear, setValue])
+
+  const availableSlots = selectedYear === '3rd Year'
+    ? ['Morning (6:00 AM – 9:00 AM)']
+    : slots
 
   const stepFields = [
     ['fullName', 'email', 'phone', 'dob', 'gender'],
     ['rollNumber', 'department', 'year'],
-    ['slot', 'emergencyName', 'emergencyPhone'],
+    ['slot'],
     ['transactionId'],
     ['agree'],
   ]
@@ -103,8 +115,7 @@ export default function Register() {
           <h1 className="display-md" style={{ marginTop: 'var(--sp-6)' }}>Registration Submitted!</h1>
           <p className="body-lg text-secondary" style={{ marginTop: 'var(--sp-4)', maxWidth: 480 }}>
             Thank you <strong style={{ color: 'var(--text-primary)' }}>{getValues('fullName')}</strong>! 
-            Your gym registration has been received. Our team will contact you at <strong style={{ color: 'var(--text-primary)' }}>{getValues('email')}</strong> within 2–3 working days to confirm your slot and complete onboarding.
-          </p>
+            Your gym registration has been received.</p>
           <div style={{ display: 'flex', gap: 'var(--sp-4)', marginTop: 'var(--sp-8)', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Link to="/" className="btn btn-primary">Back to Home</Link>
             <Link to="/rules" className="btn btn-outline">Read the Rules</Link>
@@ -149,7 +160,7 @@ export default function Register() {
               <div className="register-sidebar__card register-sidebar__note">
                 <AlertCircle size={18} className="text-red" style={{ flexShrink: 0 }} />
                 <p className="body-sm text-secondary">
-                  By submitting, you confirm that you are a current CGEC student/staff. Please note that gym slots are primarily prioritized and reserved for 3rd & 4th-year students due to space constraints. 
+                  By submitting, you confirm that you are a current CGEC student. Please note that gym slots are primarily prioritized and reserved for 3rd & 4th-year students due to space constraints. 
                   You also agree to abide by all{' '}
                   <Link to="/rules" style={{ color: 'var(--red-400)' }}>Rules & Regulations</Link> and{' '}
                   <Link to="/terms" style={{ color: 'var(--red-400)' }}>Terms & Conditions</Link>.
@@ -280,46 +291,21 @@ export default function Register() {
                   {/* Step 2: Preferences */}
                   {currentStep === 2 && (
                     <div className="register-step" aria-labelledby="step2-heading">
-                      <h2 id="step2-heading" className="display-sm register-step__title">Slot & Emergency Contact</h2>
+                      <h2 id="step2-heading" className="display-sm register-step__title">Slot Preference</h2>
                       <div className="register-fields">
                         <div className="form-group">
                           <label htmlFor="slot" className="form-label">Preferred Slot <span className="required">*</span></label>
                           <select id="slot" className={`form-control ${errors.slot ? 'error' : ''}`}
                             {...register('slot', { required: 'Please choose a slot' })}>
                             <option value="">Select preferred timing</option>
-                            {slots.map((s) => <option key={s} value={s}>{s}</option>)}
+                            {availableSlots.map((s) => <option key={s} value={s}>{s}</option>)}
                           </select>
                           {errors.slot && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.slot.message}</span>}
-                          <span className="form-helper">Slot allocation is subject to availability at time of approval.</span>
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="emergencyName" className="form-label">Emergency Contact Name <span className="required">*</span></label>
-                          <input id="emergencyName" type="text" className={`form-control ${errors.emergencyName ? 'error' : ''}`}
-                            placeholder="Parent / Guardian name"
-                            autoComplete="off"
-                            {...register('emergencyName', { required: 'Emergency contact name is required' })} />
-                          {errors.emergencyName && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.emergencyName.message}</span>}
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="emergencyPhone" className="form-label">Emergency Contact Number <span className="required">*</span></label>
-                          <input id="emergencyPhone" type="tel" className={`form-control ${errors.emergencyPhone ? 'error' : ''}`}
-                            placeholder="10-digit phone number"
-                            {...register('emergencyPhone', {
-                              required: 'Emergency contact number is required',
-                              pattern: { value: /^[6-9]\d{9}$/, message: 'Enter a valid 10-digit number' }
-                            })} />
-                          {errors.emergencyPhone && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.emergencyPhone.message}</span>}
-                        </div>
-
-                        <div className="form-group">
-                          <label htmlFor="medicalConditions" className="form-label">Medical Conditions (optional)</label>
-                          <textarea id="medicalConditions" className="form-control"
-                            placeholder="Any conditions we should know about (e.g., asthma, blood pressure)..."
-                            rows={3}
-                            {...register('medicalConditions')} />
-                          <span className="form-helper">This helps us ensure safe training. Leave blank if none.</span>
+                          <span className="form-helper">
+                            {selectedYear === '3rd Year'
+                              ? 'Note: 3rd Year students are assigned exclusively to the Morning slot.'
+                              : 'Slot allocation is subject to availability at time of approval.'}
+                          </span>
                         </div>
                       </div>
                     </div>

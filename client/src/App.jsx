@@ -1,11 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import TopographicBackground from './components/TopographicBackground'
 import Home from './pages/Home'
 import About from './pages/About'
 import Facilities from './pages/Facilities'
-import Contact from './pages/Contact'
 import Rules from './pages/Rules'
 import Terms from './pages/Terms'
 import Register from './pages/Register'
@@ -15,10 +14,20 @@ import { useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import { gsap, ScrollTrigger } from './lib/gsapSetup'
 
+import ScrollToTopButton from './components/ScrollToTopButton'
+
+export function scrollToTop(immediate = false) {
+  if (window.lenis) {
+    window.lenis.scrollTo(0, { immediate })
+  } else {
+    window.scrollTo({ top: 0, behavior: immediate ? 'instant' : 'smooth' })
+  }
+}
+
 function ScrollToTop() {
   const { pathname } = useLocation()
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    scrollToTop(true)
   }, [pathname])
   return null
 }
@@ -32,6 +41,7 @@ function Layout({ children }) {
         {children}
       </main>
       <Footer />
+      <ScrollToTopButton />
     </div>
   )
 }
@@ -49,6 +59,8 @@ export default function App() {
       wheelMultiplier: 1.0,
     })
 
+    window.lenis = lenis
+
     lenis.on('scroll', () => {
       ScrollTrigger.update()
     })
@@ -62,6 +74,7 @@ export default function App() {
 
     return () => {
       cancelAnimationFrame(animationFrameId)
+      window.lenis = null
       lenis.destroy()
     }
   }, [])
@@ -75,7 +88,7 @@ export default function App() {
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/facilities" element={<Layout><Facilities /></Layout>} />
         <Route path="/events" element={<Layout><Events /></Layout>} />
-        <Route path="/contact" element={<Layout><Contact /></Layout>} />
+        <Route path="/contact" element={<Navigate to="/" replace />} />
         <Route path="/rules" element={<Layout><Rules /></Layout>} />
         <Route path="/terms" element={<Layout><Terms /></Layout>} />
         <Route path="/register" element={<Layout><Register /></Layout>} />

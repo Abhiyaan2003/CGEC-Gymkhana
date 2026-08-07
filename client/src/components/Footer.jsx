@@ -1,9 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { MapPin, Phone, Clock, Instagram } from 'lucide-react'
+import { scrollToTop } from '../App'
 import './Footer.css'
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const location = useLocation()
+
+  const handleLinkClick = (targetPath) => {
+    if (location.pathname === targetPath) {
+      scrollToTop(false)
+    } else {
+      scrollToTop(true)
+    }
+  }
 
   return (
     <footer className="footer" role="contentinfo">
@@ -12,11 +22,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="footer__brand">
             <div className="footer__logo">
-              <div className="footer__logo-container">
+              <Link to="/" className="footer__logo-container" onClick={() => handleLinkClick('/')}>
                 <img src="/logo.png" alt="CGEC Gymkhana Logo" className="footer__logo-img" />
-              </div>
+              </Link>
               <div>
-                <div className="footer__logo-primary">CGEC Gymkhana</div>
+                <Link to="/" className="footer__logo-primary" onClick={() => handleLinkClick('/')} style={{ color: 'inherit', textDecoration: 'none' }}>
+                  CGEC Gymkhana
+                </Link>
                 <div className="footer__logo-sub">Student Fitness Facility</div>
               </div>
             </div>
@@ -44,10 +56,9 @@ export default function Footer() {
                 { to: '/about', label: 'About' },
                 { to: '/facilities', label: 'Facilities' },
                 { to: '/events', label: 'Events' },
-                { to: '/contact', label: 'Contact' },
               ].map(({ to, label }) => (
                 <li key={to}>
-                  <Link to={to} className="footer__link">{label}</Link>
+                  <Link to={to} className="footer__link" onClick={() => handleLinkClick(to)}>{label}</Link>
                 </li>
               ))}
             </ul>
@@ -63,7 +74,7 @@ export default function Footer() {
                 { to: '/register', label: 'Register Now' },
               ].map(({ to, label }) => (
                 <li key={to}>
-                  <Link to={to} className="footer__link">{label}</Link>
+                  <Link to={to} className="footer__link" onClick={() => handleLinkClick(to)}>{label}</Link>
                 </li>
               ))}
             </ul>

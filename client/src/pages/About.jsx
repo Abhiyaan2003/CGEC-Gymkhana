@@ -1,4 +1,4 @@
-import { Target, Users, Award, BookOpen } from 'lucide-react'
+import { Target, Users, Award, Clock, Dumbbell } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import CtaBanner from '../components/CtaBanner'
 import './PageCommon.css'
@@ -83,10 +83,10 @@ export default function About() {
         <div className="container">
           <div className="grid-4" style={{ gap: 'var(--sp-4)' }}>
             {[
-              { icon: <Users size={22} />, value: '500+', label: 'Active Members' },
-              { icon: <Award size={22} />, value: '5+', label: 'Years of Service' },
-              { icon: <BookOpen size={22} />, value: '40+', label: 'Equipment Units' },
-              { icon: <Target size={22} />, value: '6', label: 'Days a Week' },
+              { icon: <Users size={22} />, value: '80+', label: 'Active Members' },
+              { icon: <Award size={22} />, value: '3+', label: 'Years Running' },
+              { icon: <Dumbbell size={22} />, value: '40+', label: 'Equipment Units' },
+              { icon: <Clock size={22} />, value: '6AM-8PM', label: 'Daily Hours' },
             ].map(({ icon, value, label }, i) => (
               <div key={label} className="card card-red-hover about-stat fade-in" style={{ transitionDelay: `${i * 80}ms` }}>
                 <div className="icon-box" style={{ marginBottom: 'var(--sp-4)' }}>{icon}</div>

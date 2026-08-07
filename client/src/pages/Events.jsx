@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Calendar, Clock, MapPin, Award, ArrowRight, User, Flame } from 'lucide-react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import { CoverflowCarousel } from '../components/ui/coverflow-carousel'
 import CtaBanner from '../components/CtaBanner'
 import './PageCommon.css'
 import './Events.css'
@@ -41,16 +42,78 @@ const upcomingEvents = [
   }
 ]
 
-const pastHighlights = [
+const pastHighlightsSlides = [
   {
+    src: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&h=800&fit=crop&q=80',
+    alt: 'Powerlifting Squat Record',
     title: 'Summer Powerlifting Meet 2025',
-    achievement: '180kg Squat Record Set',
-    desc: 'A remarkable athletic turnout where the campus squat record was pushed to a massive 180kg by CSE department students. Trophies were awarded by Prof. Somen Mondal.'
+    subtitle: 'Campus Squat Record Shattered',
+    meta: [
+      { label: 'Campus Record', value: '180kg Squat' },
+      { label: 'Department', value: 'CSE Department' },
+      { label: 'Awarded By', value: 'Prof. Somen Mondal' },
+      { label: 'Year', value: '2025' }
+    ]
   },
   {
-    title: 'Independence Day Fit-India 5K Run',
-    achievement: '150+ Student Runners',
-    desc: 'Jointly organized with the Physical Education Department to promote wellness. Coordinated successfully by Balaram Mandi with certificate distribution to all finishers.'
+    src: 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?w=800&h=800&fit=crop&q=80',
+    alt: 'Fit-India Campus 5K Marathon',
+    title: 'Independence Day Fit-India 5K',
+    subtitle: '150+ Student & Faculty Runners',
+    meta: [
+      { label: 'Turnout', value: '150+ Athletes' },
+      { label: 'Pace Lead', value: 'Balaram Mandi' },
+      { label: 'Co-Organizer', value: 'Physical Ed. Dept' },
+      { label: 'Year', value: '2025' }
+    ]
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=800&h=800&fit=crop&q=80',
+    alt: 'Inter-Dept Arm Wrestling Clash',
+    title: 'Arm Wrestling Showdown 2024',
+    subtitle: 'Torque & Grip Strength Tournament',
+    meta: [
+      { label: 'Category', value: 'Heavyweight 80kg+' },
+      { label: 'Champion', value: 'Anal Kumar Saren' },
+      { label: 'Format', value: '32 Bracket Knockout' },
+      { label: 'Year', value: '2024' }
+    ]
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=800&h=800&fit=crop&q=80',
+    alt: 'Calisthenics Pull-up Challenge',
+    title: 'Max Rep Calisthenics Slam',
+    subtitle: 'Bodyweight Resistance Mastery',
+    meta: [
+      { label: 'Max Pull-Ups', value: '34 Reps Single Set' },
+      { label: 'Plank Hold', value: '8m 45s Static' },
+      { label: 'Top Scorer', value: 'Debayan Sarkar' },
+      { label: 'Year', value: '2024' }
+    ]
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=800&fit=crop&q=80',
+    alt: 'Winter Bench Press Showdown',
+    title: 'Winter Bench Press Clash',
+    subtitle: 'Max Single Rep Competition',
+    meta: [
+      { label: 'Peak Lift', value: '145kg Single Rep' },
+      { label: 'Department', value: 'ECE Department' },
+      { label: 'Attendance', value: '250+ Spectators' },
+      { label: 'Year', value: '2023' }
+    ]
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=800&h=800&fit=crop&q=80',
+    alt: 'Deadlift Monster Meet',
+    title: 'Deadlift Monster Meet',
+    subtitle: 'Pure Posterior Chain Power',
+    meta: [
+      { label: 'Max Deadlift', value: '210kg Conventional' },
+      { label: 'Lifter', value: 'Abhiyaan Mahato' },
+      { label: 'Venue', value: 'Gymkhana Hall' },
+      { label: 'Year', value: '2023' }
+    ]
   }
 ]
 
@@ -78,13 +141,13 @@ export default function Events() {
       <section className="section" ref={ref1}>
         <div className="container">
           <div className="section-header fade-in">
-            <span className="label text-red">What\'s Coming Up</span>
+            <span className="label text-red">What's Coming Up</span>
             <div className="divider" style={{ margin: 'var(--sp-3) 0' }} />
             <h2 className="display-md">Scheduled Competitions</h2>
           </div>
 
           <div style={{ position: 'relative' }}>
-            <div className="events-grid" style={{ filter: 'blur(5px)', opacity: 0.35, pointerEvents: 'none', userSelect: 'none' }}>
+            <div className="events-grid" style={{ filter: 'blur(16px)', opacity: 0.18, pointerEvents: 'none', userSelect: 'none', transform: 'translateZ(0)' }}>
               {upcomingEvents.map((evt, idx) => (
                 <div key={evt.title} className="fade-in" style={{ transitionDelay: `${idx * 80}ms` }}>
                   <div className="card card-red-hover event-card">
@@ -131,25 +194,8 @@ export default function Events() {
                 </div>
               ))}
             </div>
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 10,
-              padding: 'var(--sp-4)'
-            }}>
-              <div style={{
-                background: 'rgba(10, 10, 10, 0.8)',
-                border: '1px solid rgba(239, 68, 68, 0.2)',
-                padding: 'var(--sp-6) var(--sp-10)',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.8)',
-                backdropFilter: 'blur(10px)',
-                textAlign: 'center',
-                maxWidth: '360px'
-              }}>
+            <div className="coming-soon-overlay">
+              <div className="coming-soon-card">
                 <h3 className="display-sm text-gradient" style={{ margin: 0, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--red-500)' }}>
                   Coming Soon
                 </h3>
@@ -162,32 +208,31 @@ export default function Events() {
         </div>
       </section>
 
-      {/* Past Highlights */}
+      {/* Past Highlights & Records with Coverflow Carousel */}
       <section className="section past-events-section" ref={ref2}>
         <div className="container">
-          <div className="section-header fade-in">
+          <div className="section-header center fade-in">
             <span className="label text-red">Our Legacy</span>
-            <div className="divider" style={{ margin: 'var(--sp-3) 0' }} />
+            <div className="divider" style={{ margin: 'var(--sp-3) auto' }} />
             <h2 className="display-md">Past Highlights & Records</h2>
+            <p className="body-md text-secondary" style={{ maxWidth: 620, margin: 'var(--sp-3) auto 0' }}>
+              Swipe or use keyboard arrow keys to browse through historic athletic achievements and championship moments of CGEC Gymkhana.
+            </p>
           </div>
 
-          <div className="highlight-grid">
-            {pastHighlights.map((hl, idx) => (
-              <div key={hl.title} className="fade-in" style={{ transitionDelay: `${idx * 100}ms` }}>
-                <div className="card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-3)', marginBottom: 'var(--sp-3)' }}>
-                    <div className="icon-box" style={{ width: 42, height: 42, color: 'var(--red-500)' }}>
-                      <Award size={18} />
-                    </div>
-                    <div>
-                      <span className="label text-red" style={{ fontSize: '11px' }}>{hl.achievement}</span>
-                      <h3 className="heading-md" style={{ marginTop: '2px' }}>{hl.title}</h3>
-                    </div>
-                  </div>
-                  <p className="body-sm text-secondary">{hl.desc}</p>
-                </div>
-              </div>
-            ))}
+          <div className="fade-in" style={{ marginTop: 'var(--sp-6)' }}>
+            <CoverflowCarousel
+              slides={pastHighlightsSlides}
+              cardWidth="clamp(220px, 28vw, 320px)"
+              rotate={42}
+              depth={0.55}
+              perspective={3.2}
+              showCaption={true}
+              showPagination={true}
+              showNavigation={true}
+              label="Past Gymkhana Records & Highlights"
+              cardClassName="coverflow-carousel-card"
+            />
           </div>
         </div>
       </section>

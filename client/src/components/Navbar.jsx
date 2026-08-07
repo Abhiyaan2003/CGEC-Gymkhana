@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { NavLink, Link } from 'react-router-dom'
-import { Menu, X, Dumbbell } from 'lucide-react'
+import { NavLink, Link, useLocation } from 'react-router-dom'
+import { Menu, X } from 'lucide-react'
+import { scrollToTop } from '../App'
 import './Navbar.css'
 
 const navLinks = [
@@ -8,7 +9,6 @@ const navLinks = [
   { to: '/about', label: 'About' },
   { to: '/facilities', label: 'Facilities' },
   { to: '/events', label: 'Events' },
-  { to: '/contact', label: 'Contact' },
   { to: '/rules', label: 'Rules' },
   { to: '/terms', label: 'Terms' },
 ]
@@ -16,6 +16,7 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -28,11 +29,25 @@ export default function Navbar() {
     setIsOpen(false)
   }, [location.pathname])
 
+  const handleNavClick = (targetPath) => {
+    setIsOpen(false)
+    if (location.pathname === targetPath) {
+      scrollToTop(false)
+    } else {
+      scrollToTop(true)
+    }
+  }
+
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} role="banner">
       <div className="container navbar__inner">
         {/* Logo */}
-        <Link to="/" className="navbar__logo" aria-label="CGEC Gymkhana Home">
+        <Link
+          to="/"
+          className="navbar__logo"
+          aria-label="CGEC Gymkhana Home"
+          onClick={() => handleNavClick('/')}
+        >
           <div className="navbar__logo-container">
             <img src="/logo.png" alt="CGEC Gymkhana Logo" className="navbar__logo-img" />
           </div>
@@ -52,6 +67,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `navbar__link ${isActive ? 'navbar__link--active' : ''}`
               }
+              onClick={() => handleNavClick(to)}
             >
               {label}
             </NavLink>
@@ -60,7 +76,11 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="navbar__actions">
-          <Link to="/register" className="btn btn-primary btn-sm navbar__cta">
+          <Link
+            to="/register"
+            className="btn btn-primary btn-sm navbar__cta"
+            onClick={() => handleNavClick('/register')}
+          >
             Register Now
           </Link>
 
@@ -92,7 +112,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `navbar__mobile-link ${isActive ? 'navbar__mobile-link--active' : ''}`
               }
-              onClick={() => setIsOpen(false)}
+              onClick={() => handleNavClick(to)}
             >
               {label}
             </NavLink>
@@ -100,7 +120,7 @@ export default function Navbar() {
           <Link
             to="/register"
             className="btn btn-primary w-full navbar__mobile-cta"
-            onClick={() => setIsOpen(false)}
+            onClick={() => handleNavClick('/register')}
           >
             Register Now
           </Link>

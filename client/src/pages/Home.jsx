@@ -7,9 +7,10 @@ import HorizontalStrip from '../components/HorizontalStrip'
 import PreloadGate from '../components/PreloadGate'
 import heroFit from '../assets/hero_fit.png'
 import heroNormal from '../assets/hero_normal.png'
-import stripWeek4 from '../assets/strip_week4.jpg'
-import stripWeek8 from '../assets/strip_week8.jpg'
-import stripWeek12 from '../assets/strip_week12.jpg'
+import freeWeightsZone from '../assets/free_weights_zone.png'
+import heavyLiftingZone from '../assets/heavy_lifting_zone.png'
+import multiGymStation from '../assets/multi_gym_station.png'
+import stretchingArea from '../assets/stretching_area.png'
 import './Home.css'
 
 /* ── Equipment cards with hover crossfade ── */
@@ -18,37 +19,37 @@ const equipmentCards = [
     title: 'Free Weights',
     desc: 'Dumbbells, barbells, and weight plates for full-body strength training.',
     tag: 'Strength',
-    hoverImg: heroFit,
-    hoverPos: 'center top',
+    hoverImg: freeWeightsZone,
+    hoverPos: 'center center',
   },
   {
-    title: 'Cardio Zone',
-    desc: 'Treadmills, cycles, and ellipticals to boost endurance and burn calories.',
-    tag: 'Cardio',
-    hoverImg: stripWeek4,
+    title: 'Heavy Lifting',
+    desc: 'Squat stands, power cages, and leg press stations for compound power.',
+    tag: 'Power',
+    hoverImg: heavyLiftingZone,
     hoverPos: 'center center',
   },
   {
     title: 'Multi-Gym Station',
     desc: 'Cable machines and functional trainers for compound movements.',
     tag: 'Functional',
-    hoverImg: stripWeek12,
-    hoverPos: 'center top',
+    hoverImg: multiGymStation,
+    hoverPos: 'center center',
   },
   {
     title: 'Stretching Area',
     desc: 'Dedicated mat zone for warm-ups, cool-downs, and flexibility work.',
     tag: 'Recovery',
-    hoverImg: stripWeek8,
+    hoverImg: stretchingArea,
     hoverPos: 'center center',
   },
 ]
 
 const stats = [
   { value: '40+',     label: 'Equipment Units' },
-  { value: '6AM–8PM', label: 'Daily Hours'      },
+  { value: '6AM-8PM', label: 'Daily Hours'      },
   { value: '3+',      label: 'Years Running'    },
-  { value: '100+',    label: 'Active Members'   },
+  { value: '80+',    label: 'Active Members'   },
 ]
 
 const highlights = [
@@ -72,8 +73,8 @@ export default function Home() {
       {/* ── HERO — Pinned body-reveal ── */}
       <BodyRevealHero />
 
-      {/* ── HORIZONTAL PHOTO STRIP ── */}
-      <HorizontalStrip />
+      {/* ── HORIZONTAL PHOTO STRIP (Disabled for now) ── */}
+      {/* <HorizontalStrip /> */}
 
       {/* ── STATS BAR ── */}
       <section className="stats-bar" ref={statsRef} aria-label="Statistics">
@@ -118,7 +119,7 @@ export default function Home() {
             <div className="divider" style={{ margin: 'var(--sp-3) auto' }} />
             <h2 id="equipment-heading" className="display-md">World-Class Equipment</h2>
             <p className="body-lg text-secondary" style={{ maxWidth: 560, margin: 'var(--sp-4) auto 0' }}>
-              From heavy lifts to light cardio — everything you need is right on campus.
+              From heavy strength training to functional isolation — everything you need is right on campus.
             </p>
           </div>
 
@@ -176,7 +177,7 @@ export default function Home() {
 
           <div style={{ position: 'relative', marginTop: 'var(--sp-8)' }}>
             {/* Placeholder cards */}
-            <div className="grid-3" style={{ opacity: 0.3, pointerEvents: 'none', userSelect: 'none' }}>
+            <div className="grid-3" style={{ filter: 'blur(16px)', opacity: 0.18, pointerEvents: 'none', userSelect: 'none', transform: 'translateZ(0)' }}>
               {[
                 { title: 'Powerlifting Championship', date: 'October 12, 2026',  desc: 'Annual Squat, Bench, and Deadlift competition.', tag: 'Oct 12' },
                 { title: 'Calisthenics Challenge',    date: 'November 05, 2026', desc: 'Push bodyweight boundaries with max pull-ups, dips, and plank contests.', tag: 'Nov 05' },

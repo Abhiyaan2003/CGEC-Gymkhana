@@ -16,17 +16,21 @@ const lerp  = (a, b, t) => a + (b - a) * t
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v))
 
 export default function BodyRevealHero() {
-  const sectionRef = useRef(null)
-  const svgRef     = useRef(null)
-  const circlesRef = useRef([])
-  const rafRef     = useRef(null)
+  const sectionRef    = useRef(null)
+  const svgRef        = useRef(null)
+  const circlesRef    = useRef([])
+  const turbulenceRef = useRef(null)
+  const rafRef        = useRef(null)
 
   const maskGroupRef     = useRef(null)
   const isInteractingRef = useRef(false)
   const maskOpacityRef   = useRef(0) // Start invisible until user interacts
 
-  const blobPos   = useRef(BLOB_RADII.map(() => ({ x: VW / 2, y: VH / 2 })))
-  const targetPos = useRef({ x: VW / 2, y: VH / 2 })
+  const blobPos          = useRef(BLOB_RADII.map(() => ({ x: VW / 2, y: VH / 2 })))
+  const targetPos        = useRef({ x: VW / 2, y: VH / 2 })
+  const lastRawTargetPos = useRef({ x: VW / 2, y: VH / 2 })
+  const lastMoveTimestamp    = useRef(typeof performance !== 'undefined' ? performance.now() : Date.now())
+  const lastTurbulenceUpdate = useRef(0)
 
   /* state */
   const [isTouchDevice, setIsTouchDevice] = useState(false)
@@ -56,6 +60,12 @@ export default function BodyRevealHero() {
 
   const isVisibleRef = useRef(true)
 
+  const updateRawTarget = useCallback((pos) => {
+    lastMoveTimestamp.current = performance.now()
+    lastRawTargetPos.current = pos
+    targetPos.current = pos
+  }, [])
+
   /* ── RAF blob tick ── */
   const tick = useCallback(() => {
     if (!isVisibleRef.current) {
@@ -63,42 +73,69 @@ export default function BodyRevealHero() {
       return
     }
 
-    // Smooth lerp for mask opacity (fade in on interaction, fade out on leave)
+    const now = performance.now()
+
+    // ── 1. Throttled Roughness Breathing on <feTurbulence> (~20fps / 50ms) ──
+    if (turbulenceRef.current && now - lastTurbulenceUpdate.current > 50) {
+      lastTurbulenceUpdate.current = now
+      const freqX = 0.012 + Math.sin(now * 0.0007) * 0.0025 + Math.sin(now * 0.0017 + 0.5) * 0.001
+      const freqY = 0.012 + Math.cos(now * 0.0009 + 1.1) * 0.0025 + Math.sin(now * 0.0021 + 1.8) * 0.001
+      turbulenceRef.current.setAttribute('baseFrequency', `${freqX.toFixed(4)} ${freqY.toFixed(4)}`)
+    }
+
+    // ── 2. Smooth lerp for mask opacity ──
     const targetOpacity = isInteractingRef.current ? 1 : 0
     maskOpacityRef.current += (targetOpacity - maskOpacityRef.current) * 0.14
-
     if (maskGroupRef.current) {
       maskGroupRef.current.style.opacity = maskOpacityRef.current.toFixed(3)
     }
 
+    // ── 3. Idle Wander Target ──
+    const isIdle = (now - lastMoveTimestamp.current) > 600
+    let currentTarget = targetPos.current
+
+    if (isIdle) {
+      const xWander = Math.sin(now * 0.0008) * 18 + Math.sin(now * 0.0019 + 1.2) * 8
+      const yWander = Math.cos(now * 0.0006 + 0.8) * 18 + Math.sin(now * 0.0023 + 2.5) * 8
+      currentTarget = {
+        x: clamp(lastRawTargetPos.current.x + xWander, 30, VW - 30),
+        y: clamp(lastRawTargetPos.current.y + yWander, 30, VH - 30),
+      }
+    }
+
+    // ── 4. Lerp Circles ──
     const lf0 = reducedMotion.current ? 0.5 : LERP_FACTORS[0]
-    blobPos.current[0].x = lerp(blobPos.current[0].x, targetPos.current.x, lf0)
-    blobPos.current[0].y = lerp(blobPos.current[0].y, targetPos.current.y, lf0)
+    blobPos.current[0].x = lerp(blobPos.current[0].x, currentTarget.x, lf0)
+    blobPos.current[0].y = lerp(blobPos.current[0].y, currentTarget.y, lf0)
     for (let i = 1; i < BLOB_RADII.length; i++) {
       const lf = reducedMotion.current ? 0.5 : LERP_FACTORS[i]
       blobPos.current[i].x = lerp(blobPos.current[i].x, blobPos.current[i - 1].x, lf)
       blobPos.current[i].y = lerp(blobPos.current[i].y, blobPos.current[i - 1].y, lf)
     }
 
+    // ── 5. Independent Radius Wobble per Circle ──
     circlesRef.current.forEach((el, i) => {
       if (!el) return
+      const rWobble = Math.sin(now * 0.0015 + i * 1.3) * 4
+      const dynamicRadius = Math.max(10, BLOB_RADII[i] + rWobble)
       el.setAttribute('cx', blobPos.current[i].x.toFixed(1))
       el.setAttribute('cy', blobPos.current[i].y.toFixed(1))
-      el.setAttribute('r', BLOB_RADII[i].toFixed(1))
+      el.setAttribute('r', dynamicRadius.toFixed(1))
     })
+
     rafRef.current = requestAnimationFrame(tick)
   }, [])
 
   /* ── Mouse handlers ── */
   const onMouseEnter = useCallback((e) => {
     isInteractingRef.current = true
-    targetPos.current = toSVG(e.clientX, e.clientY)
-  }, [toSVG])
+    updateRawTarget(toSVG(e.clientX, e.clientY))
+  }, [toSVG, updateRawTarget])
 
   const onMouseMove = useCallback((e) => {
     isInteractingRef.current = true
-    targetPos.current = toSVG(e.clientX, e.clientY)
-  }, [toSVG])
+    updateRawTarget(toSVG(e.clientX, e.clientY))
+  }, [toSVG, updateRawTarget])
 
   const onMouseLeave = useCallback(() => {
     isInteractingRef.current = false
@@ -110,16 +147,16 @@ export default function BodyRevealHero() {
     isInteractingRef.current = true
     const t  = e.touches[0]
     const sv = toSVG(t.clientX, t.clientY)
-    targetPos.current = { x: clamp(sv.x, 20, VW - 20), y: clamp(sv.y, 20, VH - 20) }
-  }, [toSVG])
+    updateRawTarget({ x: clamp(sv.x, 20, VW - 20), y: clamp(sv.y, 20, VH - 20) })
+  }, [toSVG, updateRawTarget])
 
   const handleTouchMove = useCallback((e) => {
     if (!e.touches || e.touches.length === 0) return
     isInteractingRef.current = true
     const t  = e.touches[0]
     const sv = toSVG(t.clientX, t.clientY)
-    targetPos.current = { x: clamp(sv.x, 20, VW - 20), y: clamp(sv.y, 20, VH - 20) }
-  }, [toSVG])
+    updateRawTarget({ x: clamp(sv.x, 20, VW - 20), y: clamp(sv.y, 20, VH - 20) })
+  }, [toSVG, updateRawTarget])
 
   const handleTouchEnd = useCallback(() => {
     setTimeout(() => {
@@ -137,8 +174,8 @@ export default function BodyRevealHero() {
     isInteractingRef.current = true
     const x = clamp(VW / 2 + (e.gamma - calibRef.current.gamma) * TILT_SENS, 40, VW - 40)
     const y = clamp(VH / 2 + (e.beta  - calibRef.current.beta)  * TILT_SENS, 40, VH - 40)
-    targetPos.current = { x, y }
-  }, [])
+    updateRawTarget({ x, y })
+  }, [updateRawTarget])
 
   const startOrientation = useCallback(() => {
     window.addEventListener('deviceorientation', onOrientation, { passive: true })
@@ -225,16 +262,31 @@ export default function BodyRevealHero() {
           preserveAspectRatio="xMidYMin slice"
         >
           <defs>
-            <filter id="brh-goo" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+            <filter id="brh-goo" x="-40%" y="-40%" width="180%" height="180%">
+              <feTurbulence
+                ref={turbulenceRef}
+                type="fractalNoise"
+                baseFrequency="0.012"
+                numOctaves="3"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="42"
+                xChannelSelector="R"
+                yChannelSelector="G"
+                result="displaced"
+              />
+              <feGaussianBlur in="displaced" stdDeviation="8" result="blur" />
               <feColorMatrix
                 in="blur" type="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -13"
                 result="goo"
               />
             </filter>
 
-            <mask id="brh-reveal-mask">
+            <mask id="brh-reveal-mask" maskType="alpha">
               <rect width={VW} height={VH} fill="black" />
               <g ref={maskGroupRef} filter="url(#brh-goo)" style={{ opacity: 0 }}>
                 {BLOB_RADII.map((r, i) => (
@@ -260,8 +312,9 @@ export default function BodyRevealHero() {
           <g mask="url(#brh-reveal-mask)">
             <image
               href={heroFit}
-              x="0" y="0" width={VW} height={VH}
+              x="0" y="-40" width={VW} height={VH}
               preserveAspectRatio="xMidYMin slice"
+              style={{ transform: 'scale(1.02)', transformOrigin: '50% 0%' }}
             />
           </g>
         </svg>
