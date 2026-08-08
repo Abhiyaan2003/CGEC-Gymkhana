@@ -220,19 +220,31 @@ export default function Events() {
             </p>
           </div>
 
-          <div className="fade-in" style={{ marginTop: 'var(--sp-6)' }}>
-            <CoverflowCarousel
-              slides={pastHighlightsSlides}
-              cardWidth="clamp(220px, 28vw, 320px)"
-              rotate={42}
-              depth={0.55}
-              perspective={3.2}
-              showCaption={true}
-              showPagination={true}
-              showNavigation={true}
-              label="Past Gymkhana Records & Highlights"
-              cardClassName="coverflow-carousel-card"
-            />
+          <div style={{ position: 'relative', marginTop: 'var(--sp-6)' }}>
+            <div className="fade-in" style={{ filter: 'blur(16px)', opacity: 0.18, pointerEvents: 'none', userSelect: 'none', transform: 'translateZ(0)' }}>
+              <CoverflowCarousel
+                slides={pastHighlightsSlides}
+                cardWidth="clamp(220px, 28vw, 320px)"
+                rotate={42}
+                depth={0.55}
+                perspective={3.2}
+                showCaption={true}
+                showPagination={true}
+                showNavigation={true}
+                label="Past Gymkhana Records & Highlights"
+                cardClassName="coverflow-carousel-card"
+              />
+            </div>
+            <div className="coming-soon-overlay">
+              <div className="coming-soon-card">
+                <h3 className="display-sm text-gradient" style={{ margin: 0, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--red-500)' }}>
+                  Coming Soon
+                </h3>
+                <p className="body-sm text-secondary" style={{ marginTop: 'var(--sp-2)', marginBottom: 0 }}>
+                  Historic record archives & gallery updates coming soon!
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

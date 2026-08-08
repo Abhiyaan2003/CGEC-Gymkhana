@@ -112,12 +112,6 @@ export default function Terms() {
               </div>
             ))}
           </div>
-
-          <div className="terms-footer fade-in" style={{ marginTop: 'var(--sp-12)' }}>
-            <p className="body-sm text-muted">
-              For any clarification regarding these terms, contact the Physical Education Department at <a href="mailto:gymkhana@cgec.ac.in" style={{ color: 'var(--red-400)' }}>gymkhana@cgec.ac.in</a> or visit the Sports Office during working hours.
-            </p>
-          </div>
         </div>
       </section>
     </div>

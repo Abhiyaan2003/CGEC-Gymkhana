@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { CheckCircle, AlertCircle, User, Mail, Phone, Hash, BookOpen, Calendar, Users, Clock, Heart, FileText, CreditCard } from 'lucide-react'
+import godModeAudio from '../assets/God Mode Begins.mp3'
 import './PageCommon.css'
 import './Register.css'
 
@@ -31,6 +32,15 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
 
+  useEffect(() => {
+    if (submitted) {
+      const audio = new Audio(godModeAudio)
+      audio.play().catch((err) => {
+        console.warn('Audio playback error:', err)
+      })
+    }
+  }, [submitted])
+
   const {
     register,
     handleSubmit,
@@ -42,16 +52,21 @@ export default function Register() {
   } = useForm({ mode: 'onBlur' })
 
   const selectedYear = watch('year')
+  const selectedGender = watch('gender')
 
   useEffect(() => {
-    if (selectedYear === '3rd Year') {
+    if (selectedGender === 'Female') {
+      setValue('slot', 'Morning (9:00 AM – 10:30 AM)')
+    } else if (selectedYear === '3rd Year') {
       setValue('slot', 'Morning (6:00 AM – 9:00 AM)')
     }
-  }, [selectedYear, setValue])
+  }, [selectedYear, selectedGender, setValue])
 
-  const availableSlots = selectedYear === '3rd Year'
-    ? ['Morning (6:00 AM – 9:00 AM)']
-    : slots
+  const availableSlots = selectedGender === 'Female'
+    ? ['Morning (9:00 AM – 10:30 AM)']
+    : selectedYear === '3rd Year'
+      ? ['Morning (6:00 AM – 9:00 AM)']
+      : slots
 
   const stepFields = [
     ['fullName', 'email', 'phone', 'dob', 'gender'],
@@ -115,7 +130,21 @@ export default function Register() {
           <h1 className="display-md" style={{ marginTop: 'var(--sp-6)' }}>Registration Submitted!</h1>
           <p className="body-lg text-secondary" style={{ marginTop: 'var(--sp-4)', maxWidth: 480 }}>
             Thank you <strong style={{ color: 'var(--text-primary)' }}>{getValues('fullName')}</strong>! 
-            Your gym registration has been received.</p>
+            Your gym registration has been received.
+          </p>
+          <div style={{
+            marginTop: 'var(--sp-5)',
+            padding: 'var(--sp-4) var(--sp-6)',
+            background: 'rgba(225, 6, 0, 0.08)',
+            border: '1px solid rgba(225, 6, 0, 0.25)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--red-400)',
+            fontWeight: '600',
+            letterSpacing: '0.02em',
+            boxShadow: '0 0 20px rgba(225, 6, 0, 0.15)'
+          }}>
+            "Your journey of transformation starts from here"
+          </div>
           <div style={{ display: 'flex', gap: 'var(--sp-4)', marginTop: 'var(--sp-8)', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Link to="/" className="btn btn-primary">Back to Home</Link>
             <Link to="/rules" className="btn btn-outline">Read the Rules</Link>
@@ -302,9 +331,11 @@ export default function Register() {
                           </select>
                           {errors.slot && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.slot.message}</span>}
                           <span className="form-helper">
-                            {selectedYear === '3rd Year'
-                              ? 'Note: 3rd Year students are assigned exclusively to the Morning slot.'
-                              : 'Slot allocation is subject to availability at time of approval.'}
+                            {selectedGender === 'Female'
+                              ? 'Note: Female students are assigned exclusively to the Morning (9:00 AM – 10:30 AM) slot.'
+                              : selectedYear === '3rd Year'
+                                ? 'Note: 3rd Year students are assigned exclusively to the Morning slot.'
+                                : 'Slot allocation is subject to availability at time of approval.'}
                           </span>
                         </div>
                       </div>

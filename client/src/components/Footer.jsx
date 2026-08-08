@@ -33,7 +33,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="body-sm text-secondary" style={{ marginTop: 'var(--sp-4)', maxWidth: 280, lineHeight: '1.6' }}>
-              Your campus fitness destination. Powered by the Physical Education Department, built for student wellness.
+              Your campus fitness destination. Built for student wellness.
             </p>
             <div className="footer__social">
               <a href="https://www.instagram.com/cgecgymkhana/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="footer__social-link">
