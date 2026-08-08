@@ -1,4 +1,9 @@
 {
+  "name": "cgec-gymkhana-root",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix client"
+  },
   "dependencies": {
     "@formspree/react": "^3.0.0"
   }
