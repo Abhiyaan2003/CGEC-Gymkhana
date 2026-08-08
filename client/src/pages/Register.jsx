@@ -87,12 +87,6 @@ export default function Register() {
     setIsSubmitting(true)
     setSubmitError(null)
 
-    if (!data.transactionId || !data.transactionId.trim()) {
-      setSubmitError('Transaction ID is mandatory to complete registration.')
-      setIsSubmitting(false)
-      return
-    }
-
     const scriptURL = import.meta.env.VITE_APPS_SCRIPT_URL
 
     if (!scriptURL) {
@@ -390,7 +384,7 @@ export default function Register() {
                             color: 'var(--red-400)',
                             fontFamily: 'var(--font-mono)'
                           }}>
-                            8100405291@mbk
+                            8100405291@mbkns
                           </code>
                           <p className="body-xs text-muted" style={{ marginTop: 'var(--sp-2)' }}>
                             Account Name: CGEC GYMKHANA (ANAL KUMAR SAREN)
@@ -403,12 +397,8 @@ export default function Register() {
                         <input id="transactionId" type="text" className={`form-control ${errors.transactionId ? 'error' : ''}`}
                           placeholder="Enter 12-digit Transaction ID"
                           {...register('transactionId', { 
-                            required: 'Transaction ID is mandatory to complete registration',
-                            setValueAs: (v) => (typeof v === 'string' ? v.trim() : v),
-                            validate: {
-                              required: (v) => (v && v.trim().length > 0) || 'Transaction ID is mandatory to complete registration',
-                              pattern: (v) => /^\d{12}$/.test(v ? v.trim() : '') || 'Enter a valid 12-digit numeric UPI UTR / Transaction ID'
-                            }
+                            required: 'Transaction ID is required',
+                            pattern: { value: /^\d{12}$/, message: 'Enter a valid 12-digit numeric UPI UTR / Transaction ID' }
                           })} />
                         {errors.transactionId && <span className="form-error" role="alert"><AlertCircle size={12} />{errors.transactionId.message}</span>}
                         <span className="form-helper">Ensure you enter the correct 12-digit number from your payment receipt.</span>
