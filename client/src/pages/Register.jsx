@@ -14,7 +14,7 @@ const departments = [
   'Civil Engineering'
 ]
 
-const years = ['1st Year', '2nd Year', '3rd Year', '4th Year']
+const years = ['3rd Year', '4th Year']
 const slots = ['Morning (6:00 AM – 9:00 AM)', 'Evening (4:00 PM – 8:00 PM)']
 const genders = ['Male', 'Female']
 
@@ -57,16 +57,21 @@ export default function Register() {
   useEffect(() => {
     if (selectedGender === 'Female') {
       setValue('slot', 'Morning (9:00 AM – 10:30 AM)')
-    } else if (selectedYear === '3rd Year') {
+    } else if (selectedYear && selectedYear !== '4th Year') {
       setValue('slot', 'Morning (6:00 AM – 9:00 AM)')
+    } else if (selectedYear === '4th Year') {
+      const currentSlot = getValues('slot')
+      if (currentSlot === 'Morning (9:00 AM – 10:30 AM)') {
+        setValue('slot', '')
+      }
     }
-  }, [selectedYear, selectedGender, setValue])
+  }, [selectedYear, selectedGender, setValue, getValues])
 
   const availableSlots = selectedGender === 'Female'
     ? ['Morning (9:00 AM – 10:30 AM)']
-    : selectedYear === '3rd Year'
-      ? ['Morning (6:00 AM – 9:00 AM)']
-      : slots
+    : selectedYear === '4th Year'
+      ? slots
+      : ['Morning (6:00 AM – 9:00 AM)']
 
   const stepFields = [
     ['fullName', 'email', 'phone', 'dob', 'gender'],
@@ -189,7 +194,7 @@ export default function Register() {
               <div className="register-sidebar__card register-sidebar__note">
                 <AlertCircle size={18} className="text-red" style={{ flexShrink: 0 }} />
                 <p className="body-sm text-secondary">
-                  By submitting, you confirm that you are a current CGEC student. Please note that gym slots are primarily prioritized and reserved for 3rd & 4th-year students due to space constraints. 
+                  By submitting, you confirm that you are a current CGEC student. Please note that gym registration is currently open exclusively for 3rd & 4th-year students due to space constraints. 
                   You also agree to abide by all{' '}
                   <Link to="/rules" style={{ color: 'var(--red-400)' }}>Rules & Regulations</Link> and{' '}
                   <Link to="/terms" style={{ color: 'var(--red-400)' }}>Terms & Conditions</Link>.
@@ -333,9 +338,9 @@ export default function Register() {
                           <span className="form-helper">
                             {selectedGender === 'Female'
                               ? 'Note: Female students are assigned exclusively to the Morning (9:00 AM – 10:30 AM) slot.'
-                              : selectedYear === '3rd Year'
-                                ? 'Note: 3rd Year students are assigned exclusively to the Morning slot.'
-                                : 'Slot allocation is subject to availability at time of approval.'}
+                              : selectedYear === '4th Year'
+                                ? 'Note: Evening slot option is available for 4th Year students.'
+                                : 'Note: 3rd Year students are assigned exclusively to the Morning slot.'}
                           </span>
                         </div>
                       </div>
