@@ -310,7 +310,7 @@ export default function Register() {
                         </div>
 
                         <div className="form-group">
-                          <label htmlFor="year" className="form-label">Year / Semester <span className="required">*</span></label>
+                          <label htmlFor="year" className="form-label">Year <span className="required">*</span></label>
                           <select id="year" className={`form-control ${errors.year ? 'error' : ''}`}
                             {...register('year', { required: 'Please select your year' })}>
                             <option value="">Select year</option>
