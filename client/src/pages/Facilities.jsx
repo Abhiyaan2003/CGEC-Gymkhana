@@ -64,9 +64,9 @@ export default function Facilities() {
             Everything from free weights to cable and plate-loaded machines — a complete, audited setup for your fitness journey.
           </p>
           <div style={{ marginTop: 'var(--sp-6)' }}>
-            <Link to="/register" className="btn btn-primary">
-              Register to Access <ArrowRight size={18} />
-            </Link>
+            <button className="btn" disabled>
+              Registrations closed
+            </button>
           </div>
         </div>
       </section>

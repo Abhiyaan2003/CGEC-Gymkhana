@@ -68,15 +68,15 @@ export default function Footer() {
           <div className="footer__col">
             <h3 className="footer__col-title">Policies</h3>
             <ul className="footer__links">
-              {[
-                { to: '/rules', label: 'Rules & Regulations' },
-                { to: '/terms', label: 'Terms & Conditions' },
-                { to: '/register', label: 'Register Now' },
-              ].map(({ to, label }) => (
-                <li key={to}>
-                  <Link to={to} className="footer__link" onClick={() => handleLinkClick(to)}>{label}</Link>
-                </li>
-              ))}
+              <li>
+                <Link to="/rules" className="footer__link" onClick={() => handleLinkClick('/rules')}>Rules & Regulations</Link>
+              </li>
+              <li>
+                <Link to="/terms" className="footer__link" onClick={() => handleLinkClick('/terms')}>Terms & Conditions</Link>
+              </li>
+              <li>
+                <span className="footer__link" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Registrations closed</span>
+              </li>
             </ul>
           </div>
 

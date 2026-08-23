@@ -4,9 +4,8 @@ import './CtaBanner.css'
 
 export default function CtaBanner({
   title = 'Ready to Start Your Fitness Journey?',
-  subtitle = 'Join hundreds of students at CGEC Gymkhana. Register today — it\'s free for enrolled students.',
-  cta = 'Register Now',
-  link = '/register',
+  subtitle = 'Join hundreds of students at CGEC Gymkhana. Check back later when new slots open.',
+  cta = 'Registrations closed',
 }) {
   return (
     <section className="cta-banner" aria-label="Call to action">
@@ -19,10 +18,9 @@ export default function CtaBanner({
           <h2 className="display-md cta-banner__title">{title}</h2>
           <p className="body-lg cta-banner__subtitle">{subtitle}</p>
         </div>
-        <Link to={link} className="btn btn-primary btn-lg cta-banner__btn">
+        <button className="btn btn-lg cta-banner__btn" disabled>
           {cta}
-          <ArrowRight size={20} />
-        </Link>
+        </button>
       </div>
     </section>
   )

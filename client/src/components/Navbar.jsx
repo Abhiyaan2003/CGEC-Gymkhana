@@ -76,13 +76,12 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="navbar__actions">
-          <Link
-            to="/register"
-            className="btn btn-primary btn-sm navbar__cta"
-            onClick={() => handleNavClick('/register')}
+          <button
+            className="btn btn-sm navbar__cta"
+            disabled
           >
-            Register Now
-          </Link>
+            Registrations closed
+          </button>
 
           {/* Mobile hamburger */}
           <button
@@ -117,13 +116,13 @@ export default function Navbar() {
               {label}
             </NavLink>
           ))}
-          <Link
-            to="/register"
-            className="btn btn-primary w-full navbar__mobile-cta"
-            onClick={() => handleNavClick('/register')}
+          <button
+            className="btn w-full navbar__mobile-cta"
+            disabled
+            style={{ marginTop: 'var(--sp-3)' }}
           >
-            Register Now
-          </Link>
+            Registrations closed
+          </button>
         </nav>
       </div>
     </header>

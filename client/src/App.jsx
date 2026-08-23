@@ -7,7 +7,7 @@ import About from './pages/About'
 import Facilities from './pages/Facilities'
 import Rules from './pages/Rules'
 import Terms from './pages/Terms'
-import Register from './pages/Register'
+// import Register from './pages/Register'
 import Events from './pages/Events'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -91,7 +91,7 @@ export default function App() {
         <Route path="/contact" element={<Navigate to="/" replace />} />
         <Route path="/rules" element={<Layout><Rules /></Layout>} />
         <Route path="/terms" element={<Layout><Terms /></Layout>} />
-        <Route path="/register" element={<Layout><Register /></Layout>} />
+        {/* <Route path="/register" element={<Layout><Register /></Layout>} /> */}
       </Routes>
     </BrowserRouter>
   )

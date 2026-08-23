@@ -263,6 +263,20 @@ ul, ol {
   min-height: 56px;
 }
 
+/* ── Disabled / Closed Buttons ── */
+.btn:disabled,
+.btn.disabled,
+button:disabled {
+  background: rgba(225, 6, 0, 0.12) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(225, 6, 0, 0.4) !important;
+  cursor: not-allowed !important;
+  box-shadow: 0 0 15px rgba(225, 6, 0, 0.15) !important;
+  transform: none !important;
+  opacity: 0.9 !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
 /* ── Cards ── */
 .card {
   background: var(--bg-card);

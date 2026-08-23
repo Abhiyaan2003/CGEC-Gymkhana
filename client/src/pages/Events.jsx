@@ -15,8 +15,8 @@ const upcomingEvents = [
     time: '10:00 AM – 4:00 PM',
     venue: 'Student Gymkhana Hall',
     coordinator: 'Abhiyaan Mahato & Debayan Sarkar',
-    status: 'Registering',
-    registerPath: '/register'
+    status: 'Closed',
+    registerPath: '#'
   },
   {
     title: 'Calisthenics & Core Endurance Challenge',
@@ -26,8 +26,8 @@ const upcomingEvents = [
     time: '4:30 PM – 6:30 PM',
     venue: 'Gym Lawn / Indoor Hall',
     coordinator: 'Balaram Mandi & Mousumi Khan',
-    status: 'Upcoming',
-    registerPath: '/register'
+    status: 'Closed',
+    registerPath: '#'
   },
   {
     title: 'Inter-Departmental Arm Wrestling Clash',
@@ -37,8 +37,8 @@ const upcomingEvents = [
     time: '2:00 PM – 5:00 PM',
     venue: 'Student Common Room',
     coordinator: 'Anal Kumar Saren',
-    status: 'Upcoming',
-    registerPath: '/register'
+    status: 'Closed',
+    registerPath: '#'
   }
 ]
 
@@ -186,7 +186,7 @@ export default function Events() {
                         </Link>
                       ) : (
                         <button className="btn btn-sm btn-disabled w-full" disabled>
-                          Registrations Not Open
+                          Registrations closed
                         </button>
                       )}
                     </div>

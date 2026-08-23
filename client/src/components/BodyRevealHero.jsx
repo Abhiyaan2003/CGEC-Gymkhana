@@ -342,9 +342,9 @@ export default function BodyRevealHero() {
           Engineered to build champions.
         </p>
         <div className="brh__actions">
-          <Link to="/register" className="btn btn-primary brh__cta">
-            Register Now <ArrowRight size={18} />
-          </Link>
+          <button className="btn brh__cta" disabled>
+            Registrations closed
+          </button>
         </div>
 
         {/* iOS permission */}
