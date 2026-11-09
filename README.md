@@ -7,31 +7,80 @@
 git clone https://github.com/Abhiyaan2003/CGEC-Gymkhana.git && cd CGEC-Gymkhana/client && npm install && npm run dev
 ```
 
-🔗 **[Live site →](https://cgec-gymkhana.vercel.app)** · [Register now](https://cgec-gymkhana.vercel.app/register)
+🔗 **[Live site →](https://cgec-gymkhana.vercel.app)** · [Browse Facilities](https://cgec-gymkhana.vercel.app/facilities) · [View Rules](https://cgec-gymkhana.vercel.app/rules)
 
 [![CI](https://github.com/Abhiyaan2003/CGEC-Gymkhana/actions/workflows/ci.yml/badge.svg)](https://github.com/Abhiyaan2003/CGEC-Gymkhana/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## Features
+## 📸 Page Previews
 
-- 🏋️‍♂️ **7-Page Portal**: Home, About, Facilities, Contact, Rules, Terms, and Registration.
-- 📋 **4-Step Registration Wizard**: Personal information, academic details, slot preferences, emergency contact, and terms review.
-- ✨ **Fluid Visuals**: Built with GSAP and Lenis smooth scrolling, featuring a zero-photography, SVG- and CSS-driven graphic aesthetic.
-- 📱 **Mobile & Accessibility First**: Fully responsive down to 375px mobile screens, respecting `prefers-reduced-motion` and WCAG AA contrast standards.
+Explore previews of all pages across the portal:
 
-## Project Structure
+### 1. Home
+*Interactive hero section with animated body-reveal mechanics, real-time status, quick notices, and gym highlights.*
+![Home Page](docs/screenshots/01-home.png)
+
+### 2. About
+*History of the fitness facility, institutional mission, faculty coordinators, and student gym committee.*
+![About Page](docs/screenshots/02-about.png)
+
+### 3. Facilities
+*Interactive 3D coverflow showcase of equipment zones — Free Weights, Multi-Gym Stations, Heavy Lifting, and Stretching Area.*
+![Facilities Page](docs/screenshots/03-facilities.png)
+
+### 4. Events
+*Campus fitness challenges, powerlifting meets, intramural sports, and competition timelines.*
+![Events Page](docs/screenshots/04-events.png)
+
+### 5. Rules & Guidelines
+*Operating hours, hygiene standards, slot booking protocols, and gym etiquette.*
+![Rules Page](docs/screenshots/05-rules.png)
+
+### 6. Terms & Conditions
+*Safety agreements, institutional liability policies, emergency contacts, and code of conduct.*
+![Terms Page](docs/screenshots/06-terms.png)
+
+---
+
+## ⚡ Features
+
+- 🏋️‍♂️ **6-Page Student Portal**: Home, About, Facilities, Events, Rules, and Terms.
+- 🎨 **Distinctive Design System**: Engineered with a signature midnight black (`#0A0A0A`) & racing red (`#E10600`) identity, pairing Barlow Condensed display headings with Inter body typography.
+- 📐 **Zero-Photography Graphic Aesthetic**: Built purely around SVG topographic patterns, Lucide iconography, CSS design tokens, and curated vector assets.
+- 🏎️ **Smooth Motion**: Powered by GSAP animations, ScrollTrigger transitions, and Lenis inertial smooth scrolling.
+- ♿ **Accessible & Mobile-First**: Structured semantic HTML, complete keyboard navigation, skip-to-content links, and full responsiveness across phones, tablets, and desktop displays.
+
+---
+
+## 📁 Project Structure
 
 ```text
 CGEC-Gymkhana/
-├── client/          # Vite + React 19 frontend application
-├── server/          # Optional / planned backend services
-├── docs/            # Media assets & demo recordings
-└── .github/         # CI workflows and issue templates
+├── client/
+│   ├── src/
+│   │   ├── components/      # Navbar, Footer, Hero, 3D Coverflow carousel
+│   │   ├── pages/           # Home, About, Facilities, Events, Rules, Terms
+│   │   ├── hooks/           # Scroll & layout hooks
+│   │   └── lib/             # GSAP & Lenis setup
+│   └── public/              # Static public assets
+├── docs/
+│   └── screenshots/         # Automated visual snapshots of each page
+└── .github/
+    ├── workflows/           # Automated CI testing
+    └── ISSUE_TEMPLATE/      # GitHub issue forms
 ```
 
-## Getting Started
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18 or newer)
+- npm or pnpm
+
+### Quick Setup
 
 1. **Clone the repository:**
    ```bash
@@ -44,22 +93,28 @@ CGEC-Gymkhana/
    npm install
    ```
 
-3. **Start local development server:**
+3. **Start the local development server:**
    ```bash
    npm run dev
    ```
-   Open [http://localhost:5173](http://localhost:5173) in your browser.
+   Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
-4. **Linting and checks:**
+4. **Lint and format checks:**
    ```bash
    npm run lint
    ```
 
-## Contributing
+5. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on opening issues, local setup, and submitting pull requests.
+---
 
-## License
+## 🤝 Contributing
 
-This project is licensed under the [MIT License](LICENSE).
+Contributions, bug reports, and ideas are welcome! Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
+## 📄 License
+
+This repository is distributed under the [MIT License](LICENSE).
