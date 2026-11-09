@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an idea or feature for CGEC Gymkhana
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Have an idea to make CGEC Gymkhana better? Let us know!
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Problem or use case
+      description: What problem are you trying to solve, or what need does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed solution
+      description: Describe your proposed solution or how you envision the feature working.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative ideas or solutions you considered?
+    validations:
+      required: false
+
